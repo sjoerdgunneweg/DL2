@@ -172,3 +172,5 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+mast3r/checkpoints/*.pth
+mast3r/checkpoints/*.pkl
