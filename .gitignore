@@ -177,4 +177,5 @@ mast3r/checkpoints/*.pkl
 
 mast3r/asmk/
 mast3r/checkpoints
+out_files/
 
