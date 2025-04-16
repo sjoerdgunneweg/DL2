@@ -179,3 +179,5 @@ mast3r/asmk/
 mast3r/checkpoints
 out_files/
 
+mast3r/asmk/*
+mast3r/data/

@@ -12,6 +12,6 @@ module purge
 module load 2024
 module load Anaconda3/2024.06-1
 
-cd $HOME/DL2/mast3r
+cd mast3r
 source activate mast3r
 srun python usage.py
