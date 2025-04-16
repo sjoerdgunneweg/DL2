@@ -69,3 +69,4 @@ if __name__ == '__main__':
         (x0, y0), (x1, y1) = viz_matches_im0[i].T, viz_matches_im1[i].T
         pl.plot([x0, x1 + W0], [y0, y1], '-+', color=cmap(i / (n_viz - 1)), scalex=False, scaley=False)
     pl.show(block=True)
+    pl.savefig('output_usage.pdf')
