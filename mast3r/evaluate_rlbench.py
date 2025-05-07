@@ -11,9 +11,15 @@ if __name__ == '__main__':
     lr = 0.01
     niter = 300
 
+
+    # Load the model:
     model_name = "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric"
-    # you can put the path to a local checkpoint in model_name if needed
     model = AsymmetricMASt3R.from_pretrained(model_name).to(device)
+
+
+    # Load the dataset:
+
+    
     images = load_images(['../img1.png', '../img2.png'], size=512)
     output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
 
@@ -24,7 +30,7 @@ if __name__ == '__main__':
     pnts3d1 = pred1["pts3d"]
     pnts3d2 = pred2["pts3d_in_other_view"]
 
-    # plot the depth of image 1 using 3d points:
+    # plot the depth of image 1 using 3d points:depth
     import matplotlib.pyplot as plt
     plt.figure()
     plt.imshow(pnts3d1[0, :, :, 2].cpu().numpy())
