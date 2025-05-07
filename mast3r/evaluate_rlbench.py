@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from mast3r.model import AsymmetricMASt3R
 from mast3r.fast_nn import fast_reciprocal_NNs
 
@@ -36,7 +38,7 @@ if __name__ == '__main__':
     pnts3d2 = pred2["pts3d_in_other_view"]
 
     # plot the depth of image 1 using 3d points:depth
-    import matplotlib.pyplot as plt
+
     plt.figure()
     plt.imshow(pnts3d1[0, :, :, 2].cpu().numpy())
     plt.savefig('test.pdf')
