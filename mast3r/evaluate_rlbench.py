@@ -23,8 +23,10 @@ if __name__ == '__main__':
     images = load_images(['../img1.png', '../img2.png'], size=512)
     output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
 
+    plt.figure()
     plt.imshow(images[0])
     plt.savefig('test.png')
+    plt.show(block=True)
 
     # at this stage, you have the raw dust3r predictions
     view1, pred1 = output['view1'], output['pred1']
