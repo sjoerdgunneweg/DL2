@@ -26,7 +26,7 @@ if __name__ == '__main__':
     output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
 
     plt.figure()
-    plt.imshow(images[0]["img"])
+    plt.imshow(images[0]["img"][0].transpose(1, 2, 0))
     plt.savefig('test.png')
     plt.show(block=True)
 
