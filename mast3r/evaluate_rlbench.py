@@ -43,6 +43,6 @@ if __name__ == '__main__':
     plt.figure()
     depth = Image.fromarray(pnts3d1[0, :, :, 2].cpu().numpy())
     depth = depth.resize((128, 128), Image.LANCZOS)
-    plt.imshow(depth)
+    plt.imshow(np.asarray(depth))
     plt.savefig('test.pdf')
     plt.show(block=True)
