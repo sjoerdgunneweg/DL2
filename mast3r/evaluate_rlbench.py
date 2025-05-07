@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 from mast3r.model import AsymmetricMASt3R
 from mast3r.fast_nn import fast_reciprocal_NNs
@@ -20,13 +21,12 @@ if __name__ == '__main__':
 
 
     # Load the dataset:
-
     
     images = load_images(['../img1.png', '../img2.png'], size=512)
     output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
 
     plt.figure()
-    plt.imshow(images[0]["img"][0].transpose(1, 2, 0))
+    plt.imshow(np.transpose(images[0]["img"][0], (1, 2, 0)))
     plt.savefig('test.png')
     plt.show(block=True)
 
