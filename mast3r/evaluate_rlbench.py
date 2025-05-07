@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from PIL import Image
 
 from mast3r.model import AsymmetricMASt3R
 from mast3r.fast_nn import fast_reciprocal_NNs
@@ -22,7 +23,7 @@ if __name__ == '__main__':
 
     # Load the dataset:
     
-    images = load_images(['../img1.png', '../img2.png'], size=128, square_ok=True)
+    images = load_images(['../img1.png', '../img2.png'], size=512, square_ok=True)
     output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
 
     plt.figure()
@@ -40,6 +41,8 @@ if __name__ == '__main__':
     # plot the depth of image 1 using 3d points:depth
 
     plt.figure()
-    plt.imshow(pnts3d1[0, :, :, 2].cpu().numpy())
+    depth = Image.fromarray(pnts3d1[0, :, :, 2].cpu().numpy())
+    depth = depth.resize((128, 128), Image.LANCZOS)
+    plt.imshow(depth)
     plt.savefig('test.pdf')
     plt.show(block=True)
