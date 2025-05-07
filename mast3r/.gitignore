@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 mast3r/checkpoints/*.pth
 mast3r/checkpoints/*.pkl
+
+mast3r/cache
+predictions/
