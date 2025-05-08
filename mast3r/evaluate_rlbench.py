@@ -31,13 +31,15 @@ if __name__ == '__main__':
 
     # Load the dataset:
     
-    images = load_images(['../img1.png', '../img2.png'], size=512, square_ok=True) #,'../img3.png','../img4.png','../img5.png'
+    images = load_images(['../img1.png', '../img2.png','../img3.png','../img4.png','../img5.png'], size=512, square_ok=True)
     pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
     output = inference(pairs, model, device, batch_size=1, verbose=False)
 
     mode = GlobalAlignerMode.PointCloudOptimizer #if len(images) > 2 else GlobalAlignerMode.PairViewer
     scene = global_aligner(output, device=device, mode=mode, verbose=False)
-    
+    if mode == GlobalAlignerMode.PointCloudOptimizer:
+        loss = scene.compute_global_alignment(init='mst', niter=niter, schedule=schedule, lr=lr)
+
     rgbimg = scene.imgs
     depths = to_numpy(scene.get_depthmaps())
     depths_max = max([d.max() for d in depths])
