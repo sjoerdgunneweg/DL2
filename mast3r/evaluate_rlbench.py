@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+np.set_printoptions(threshold=sys.maxsize)
+
 from PIL import Image
 
 from mast3r.model import AsymmetricMASt3R
