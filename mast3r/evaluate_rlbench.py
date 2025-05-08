@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # Load the dataset:
     
-    images = load_images(['../img1.png', '../img2.png'], size=512, square_ok=True)
+    images = load_images(['../img1.png', '../img2.png','../img3.png','../img4.png','../img5.png'], size=512, square_ok=True)
     pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
     output = inference(pairs, model, device, batch_size=1, verbose=False)
 
@@ -57,5 +57,23 @@ if __name__ == '__main__':
     depth = depth.resize((128, 128), Image.LANCZOS)
     plt.imshow(np.asarray(depth))
     plt.savefig('test1.pdf')
+    plt.show(block=True)
+    plt.figure()
+    depth = Image.fromarray(imgs[2])
+    depth = depth.resize((128, 128), Image.LANCZOS)
+    plt.imshow(np.asarray(depth))
+    plt.savefig('test2.pdf')
+    plt.show(block=True)
+    plt.figure()
+    depth = Image.fromarray(imgs[3])
+    depth = depth.resize((128, 128), Image.LANCZOS)
+    plt.imshow(np.asarray(depth))
+    plt.savefig('test3.pdf')
+    plt.show(block=True)
+    plt.figure()
+    depth = Image.fromarray(imgs[4])
+    depth = depth.resize((128, 128), Image.LANCZOS)
+    plt.imshow(np.asarray(depth))
+    plt.savefig('test4.pdf')
     plt.show(block=True)
 
