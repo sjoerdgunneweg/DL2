@@ -3,7 +3,6 @@ import numpy as np
 from PIL import Image
 
 from mast3r.model import AsymmetricMASt3R
-from dust3r.model import AsymmetricCroCo3DStereo
 from mast3r.fast_nn import fast_reciprocal_NNs
 
 import mast3r.utils.path_to_dust3r
@@ -25,9 +24,6 @@ if __name__ == '__main__':
     # Load the model:
     model_name = "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric"
     model = AsymmetricMASt3R.from_pretrained(model_name).to(device)
-    model_name = "naver/DUSt3R_ViTLarge_BaseDecoder_512_dpt"
-    # you can put the path to a local checkpoint in model_name if needed
-    model = AsymmetricCroCo3DStereo.from_pretrained(model_name).to(device)
 
 
     # Load the dataset:
