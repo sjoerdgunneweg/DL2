@@ -7,11 +7,10 @@ from mast3r.fast_nn import fast_reciprocal_NNs
 
 import mast3r.utils.path_to_dust3r
 from dust3r.inference import inference
-from dust3r.utils.image import load_images
+from dust3r.utils.image import load_images, rgb
 from dust3r.image_pairs import make_pairs
-from dust3r.utils.image import rgb
-from dust3r.utils.image import to_numpy
-from dust3r.utils.image import get_3D_model_from_scene
+from dust3r.utils.device import to_numpy
+from dust3r.demo import get_3D_model_from_scene
 from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
 
 
