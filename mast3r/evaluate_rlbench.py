@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     # Load the dataset:
     
-    images = load_images(['../img1.png', '../img2.png'], size=512, square_ok=True)
+    images = load_images(['../img1.png', '../img2.png', '../img3.png'], size=512, square_ok=True)
     pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
     output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
 
