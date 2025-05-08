@@ -30,7 +30,7 @@ if __name__ == '__main__':
     
     images = load_images(['../img1.png', '../img2.png', '../img3.png'], size=512, square_ok=True)
     pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
-    output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
+    output = inference([pairs], model, device, batch_size=1, verbose=False)
 
     mode = GlobalAlignerMode.PointCloudOptimizer if len(images) > 2 else GlobalAlignerMode.PairViewer
     scene = global_aligner(output, device=device, mode=mode, verbose=False)
