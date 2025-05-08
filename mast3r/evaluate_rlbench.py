@@ -56,9 +56,4 @@ if __name__ == '__main__':
     plt.imshow(np.asarray(depth))
     plt.savefig('test1.pdf')
     plt.show(block=True)
-    depth = Image.fromarray(imgs[2])
-    depth = depth.resize((128, 128), Image.LANCZOS)
-    plt.imshow(np.asarray(depth))
-    plt.savefig('test2.pdf')
-    plt.show(block=True)
 
