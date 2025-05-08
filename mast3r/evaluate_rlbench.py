@@ -8,6 +8,12 @@ from mast3r.fast_nn import fast_reciprocal_NNs
 import mast3r.utils.path_to_dust3r
 from dust3r.inference import inference
 from dust3r.utils.image import load_images
+from dust3r.image_pairs import make_pairs
+from dust3r.utils.image import rgb
+from dust3r.utils.image import to_numpy
+from dust3r.utils.image import get_3D_model_from_scene
+from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
+
 
 if __name__ == '__main__':
     device = 'cuda'
@@ -24,25 +30,25 @@ if __name__ == '__main__':
     # Load the dataset:
     
     images = load_images(['../img1.png', '../img2.png'], size=512, square_ok=True)
+    pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
     output = inference([tuple(images)], model, device, batch_size=1, verbose=False)
 
-    plt.figure()
-    plt.imshow(np.transpose(images[0]["img"][0], (1, 2, 0)))
-    plt.savefig('test.png')
-    plt.show(block=True)
+    mode = GlobalAlignerMode.PointCloudOptimizer if len(images) > 2 else GlobalAlignerMode.PairViewer
+    scene = global_aligner(output, device=device, mode=mode, verbose=False)
+    
+    rgbimg = scene.imgs
+    depths = to_numpy(scene.get_depthmaps())
 
-    # at this stage, you have the raw dust3r predictions
-    view1, pred1 = output['view1'], output['pred1']
-    view2, pred2 = output['view2'], output['pred2']
-
-    pnts3d1 = pred1["pts3d"]
-    pnts3d2 = pred2["pts3d_in_other_view"]
+    imgs = []
+    for i in range(len(rgbimg)):
+        imgs.append(rgb(depths[i]))
 
     # plot the depth of image 1 using 3d points:depth
 
     plt.figure()
-    depth = Image.fromarray(pnts3d1[0, :, :, 2].cpu().numpy())
+    depth = Image.fromarray(imgs[0])
     depth = depth.resize((128, 128), Image.LANCZOS)
     plt.imshow(np.asarray(depth))
     plt.savefig('test.pdf')
     plt.show(block=True)
+
