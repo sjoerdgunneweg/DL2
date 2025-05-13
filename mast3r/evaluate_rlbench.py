@@ -45,9 +45,9 @@ if __name__ == '__main__':
 
     rgbimg = scene.imgs
     depths = to_numpy(scene.get_depthmaps())
+    depths_max = max([d.max() for d in depths])
+    depths = [d / depths_max for d in depths]
     print(depths[0])
-    # depths_max = max([d.max() for d in depths])
-    # depths = [d / depths_max for d in depths]
 
     imgs = []
     for i in range(len(rgbimg)):
