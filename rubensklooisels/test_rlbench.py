@@ -37,7 +37,7 @@ EPISODES_FOLDER = 'colab_dataset/open_drawer/all_variations/episodes'
 if __name__ == '__main__':
     
     data_path = os.path.join(DATA_FOLDER, EPISODES_FOLDER)
-    TEST_DATA_PATH = os.path.abspath("../../../DL2/rlbench - 0B2LlLwoO3nfZfkFqMEhXWkxBdjJNNndGYl9uUDQwS1pfNkNHSzFDNGwzd1NnTmlpZXR1bVE/test/")
+    TEST_DATA_PATH = os.path.abspath("../../test/")
 
     
 
