@@ -14,4 +14,4 @@ module load Anaconda3/2024.06-1
 
 cd mast3r
 source activate mast3r
-srun python evaluate_rlbench.py
+srun python test_rlbench.py
