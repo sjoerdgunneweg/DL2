@@ -113,6 +113,6 @@ def create_depth_maps(np_img_list, model, device, batch_size=1, niter=300, sched
 
     imgs = []
     for i in range(len(rgbimg)):
-        imgs.append(rgb(depths[i]))
+        imgs.append(Image.fromarray(rgb(depths[i])).resize((128, 128), Image.LANCZOS))
 
     return imgs
