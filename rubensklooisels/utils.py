@@ -88,7 +88,7 @@ def load_images_from_loaded(images, size, square_ok=False, verbose=True):
 
 
 
-import mast3r.mast3r.utils.path_to_dust3r
+import mast3r.utils.path_to_dust3r
 from dust3r.inference import inference
 from dust3r.image_pairs import make_pairs
 from dust3r.utils.device import to_numpy
