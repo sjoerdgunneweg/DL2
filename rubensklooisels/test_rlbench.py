@@ -72,6 +72,9 @@ if __name__ == '__main__':
                         obs_dict['right_shoulder_rgb'], 
                         obs_dict['wrist_rgb']]
                 
+                for img in images:
+                    print(img.shape)
+                
                 depths = create_depth_maps(images, model, device, batch_size=1, niter=niter, schedule=schedule, lr=lr)
                 print("lol")
                 break
