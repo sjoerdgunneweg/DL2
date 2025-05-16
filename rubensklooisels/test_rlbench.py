@@ -72,6 +72,12 @@ if __name__ == '__main__':
                           np.transpose(obs_dict['right_shoulder_rgb'], (1, 2, 0)),
                             np.transpose(obs_dict['wrist_rgb'], (1, 2, 0))]                
                 
+                for i,image in enumerate(images):
+                    plt.figure()
+                    plt.imshow(image)
+                    plt.savefig(f'test_rgb{i}.png')
+                    plt.show(block=True)
+
                 depths = create_depth_maps(images, model, device, batch_size=1, niter=niter, schedule=schedule, lr=lr)
                 print("lol")
 
