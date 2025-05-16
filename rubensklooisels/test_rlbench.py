@@ -67,13 +67,10 @@ if __name__ == '__main__':
             for ts in range(len(demo)):
                 obs_dict = extract_obs(demo._observations[ts], CAMERAS, t=ts)
 
-                images = [obs_dict['front_rgb'], 
-                        obs_dict['left_shoulder_rgb'], 
-                        obs_dict['right_shoulder_rgb'], 
-                        obs_dict['wrist_rgb']]
-                
-                for img in images:
-                    print(img.shape)
+                images = [np.transpose(obs_dict['front_rgb'](1, 2, 0)),
+                          np.transpose(obs_dict['left_shoulder_rgb'], (1, 2, 0)),
+                          np.transpose(obs_dict['right_shoulder_rgb'], (1, 2, 0)),
+                            np.transpose(obs_dict['wrist_rgb'], (1, 2, 0))]                
                 
                 depths = create_depth_maps(images, model, device, batch_size=1, niter=niter, schedule=schedule, lr=lr)
                 print("lol")
