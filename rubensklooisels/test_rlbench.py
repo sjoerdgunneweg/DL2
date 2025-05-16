@@ -67,7 +67,7 @@ if __name__ == '__main__':
             for ts in range(len(demo)):
                 obs_dict = extract_obs(demo._observations[ts], CAMERAS, t=ts)
 
-                images = [np.transpose(obs_dict['front_rgb'](1, 2, 0)),
+                images = [np.transpose(obs_dict['front_rgb'], (1, 2, 0)),
                           np.transpose(obs_dict['left_shoulder_rgb'], (1, 2, 0)),
                           np.transpose(obs_dict['right_shoulder_rgb'], (1, 2, 0)),
                             np.transpose(obs_dict['wrist_rgb'], (1, 2, 0))]                
