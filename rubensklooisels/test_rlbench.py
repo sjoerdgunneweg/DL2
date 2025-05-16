@@ -82,7 +82,7 @@ if __name__ == '__main__':
                 print("lol")
 
                 plt.figure()
-                plt.imshow(depths[0])
+                plt.imshow(np.asarray(depths[0]))
                 plt.savefig('test_depth.png')
                 plt.show(block=True)
 
