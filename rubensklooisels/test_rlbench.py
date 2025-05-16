@@ -74,6 +74,16 @@ if __name__ == '__main__':
                 
                 depths = create_depth_maps(images, model, device, batch_size=1, niter=niter, schedule=schedule, lr=lr)
                 print("lol")
+
+                plt.figure()
+                plt.imshow(depths[0])
+                plt.savefig('test_depth.png')
+                plt.show(block=True)
+
+                plt.figure()
+                plt.imshow(np.transpose(obs_dict['front_depth'], (1, 2, 0)))
+                plt.savefig('test_depth1.png')
+                plt.show(block=True)
                 break
 
             break
