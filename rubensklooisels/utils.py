@@ -110,7 +110,6 @@ def create_depth_maps(np_img_list, model, device, batch_size=1, niter=300, sched
     depths = to_numpy(scene.get_depthmaps())
     depths_max = max([d.max() for d in depths])
     depths = [d / depths_max for d in depths]
-    print(depths[0])
 
     imgs = []
     for i in range(len(rgbimg)):
