@@ -17,9 +17,9 @@ import sys
 np.set_printoptions(threshold=sys.maxsize)
 
 import sys
-sys.path.append("..")
 
-from mast3r.mast3r.model import AsymmetricMASt3R
+sys.path.append('../mast3r')
+from mast3r.model import AsymmetricMASt3R
 
 from utils import create_depth_maps
 
