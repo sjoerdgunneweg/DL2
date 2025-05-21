@@ -12,3 +12,5 @@ wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge
 
 ## additional reqs install:
 pip install scipy ftfy regex tqdm torch git+https://github.com/openai/CLIP.git einops pyrender==0.1.45 trimesh==3.9.34 pycollada==0.6
+
+inside rubensklooisels git git clone https://github.com/peract/peract_colab.git
