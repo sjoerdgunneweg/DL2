@@ -81,7 +81,11 @@ $PYTHONPATH
     
     # Install additional Python packages
     python -m pip install yacs omegaconf hydra-core pandas PyYAML
-    
+
+    # CUDA installment
+    export FORCE_CUDA=1
+    export TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6"
+
     # Install PyTorch3D dependencies and package
     python -m pip install iopath fvcore
     pip install --no-index --no-cache-dir pytorch3d \
@@ -90,10 +94,6 @@ $PYTHONPATH
     # Install RVT and its components
     cd /root/install/RVT
     python -m pip install -e '.[xformers]' || pip install -e .
-
-    # CUDA installment
-    export FORCE_CUDA=1
-    export TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6"
     
     # Install required libraries
     python -m pip install -e rvt/libs/PyRep
