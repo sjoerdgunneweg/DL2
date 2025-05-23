@@ -71,6 +71,8 @@ if __name__ == '__main__':
             episode_path = os.path.join(episodes_path, f'episode{episode_idx}')
 
             for ts in tqdm(range(len(demo))):
+                if ts == 6 or ts == 7:
+                    continue
                 obs_dict = extract_obs(demo._observations[ts], CAMERAS, t=ts)
 
                 images = [
