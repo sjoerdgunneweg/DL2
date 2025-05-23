@@ -39,7 +39,7 @@ if __name__ == '__main__':
     device = 'cuda'
     schedule = 'cosine'
     lr = 0.01
-    niter = 300
+    niter = 150
     model_name = "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric"
     model = AsymmetricMASt3R.from_pretrained(model_name).to(device)
 
