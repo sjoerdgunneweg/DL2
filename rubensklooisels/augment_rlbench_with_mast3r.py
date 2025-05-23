@@ -2,6 +2,7 @@ import numpy as np
 np.bool = np.bool_  # Fix for deprecated `np.bool`
 
 import os
+import argparse
 import sys
 import matplotlib
 matplotlib.use('Agg')  # Use non-GUI backend
@@ -23,13 +24,17 @@ from rlbench.backend.utils import extract_obs
 # Constants
 CAMERAS = ['front', 'left_shoulder', 'right_shoulder', 'wrist']
 IMAGE_SIZE = 128
-DATA_FOLDER = 'peract_colab/data'
-EPISODES_FOLDER = 'colab_dataset/open_drawer/all_variations/episodes'
 DEPTH_SCALE = 2**24 - 1
 
 if __name__ == '__main__':
-    data_path = os.path.join(DATA_FOLDER, EPISODES_FOLDER)
-    TRAIN_DATA_PATH = os.path.abspath("../../data/train")  
+    parser = argparse.ArgumentParser(description='Process depth maps from RLBench data')
+    parser.add_argument('--data_path', type=str, default='/data/train',
+                        help='Path to the data directory (default: /data/train)')
+    parser.add_argument('--tasks', nargs='+', type=str, default=None,
+                        help='List of specific task names to process (default: process all tasks)')
+    args = parser.parse_args()
+
+    data_path = args.data_path
 
     device = 'cuda'
     schedule = 'cosine'
@@ -38,15 +43,18 @@ if __name__ == '__main__':
     model_name = "naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric"
     model = AsymmetricMASt3R.from_pretrained(model_name).to(device)
 
-    task_dirs = os.listdir(TRAIN_DATA_PATH)
+    if args.tasks:
+        task_dirs = args.tasks
+    else:
+        task_dirs = os.listdir(data_path)
 
     for task_dir in task_dirs:
         print(f"Current task: {task_dir}")
-        task_path = os.path.join(TRAIN_DATA_PATH, task_dir)
+        task_path = os.path.join(data_path, task_dir)
         episodes_path = os.path.join(task_path, "all_variations/episodes")
         
-        if not os.path.exists(episodes_path):
-            print(f"Skipping missing episode folder: {episodes_path}")
+        if not os.path.exists(os.path.join(task_path, episodes_path)):
+            print(f"Task folder is not found in the data directory: {os.path.join(task_path, episodes_path)}. Skipping...")
             continue
 
         episode_dirs = sorted(os.listdir(episodes_path))
