@@ -57,7 +57,9 @@ if __name__ == '__main__':
             print(f"Task folder is not found in the data directory: {os.path.join(task_path, episodes_path)}. Skipping...")
             continue
 
-        episode_dirs = sorted(os.listdir(episodes_path))
+        episode_dirs = sorted([d for d in os.listdir(episodes_path) 
+                      if os.path.isdir(os.path.join(episodes_path, d)) 
+                      and d.startswith('episode')])
 
         for episode_idx in range(len(episode_dirs)):
             print(f"  Current episode: {episode_idx}")
@@ -66,7 +68,7 @@ if __name__ == '__main__':
             except Exception as e:
                 print(f"    Failed to load demo {episode_idx}: {e}")
                 continue
-            episode_path = os.path.join(episodes_path, episode_dirs[episode_idx])
+            episode_path = os.path.join(episodes_path, f'episode{episode_idx}')
 
             for ts in range(len(demo)):
                 obs_dict = extract_obs(demo._observations[ts], CAMERAS, t=ts)
