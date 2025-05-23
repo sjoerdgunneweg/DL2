@@ -1,6 +1,6 @@
 import numpy as np
 np.bool = np.bool_  # Fix for deprecated `np.bool`
-
+import tqdm
 import os
 import argparse
 import sys
@@ -70,7 +70,7 @@ if __name__ == '__main__':
                 continue
             episode_path = os.path.join(episodes_path, f'episode{episode_idx}')
 
-            for ts in range(len(demo)):
+            for ts in tqdm(range(len(demo))):
                 obs_dict = extract_obs(demo._observations[ts], CAMERAS, t=ts)
 
                 images = [

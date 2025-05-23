@@ -97,8 +97,8 @@ from dust3r.utils.device import to_numpy
 from dust3r.demo import get_3D_model_from_scene
 from dust3r.cloud_opt import global_aligner, GlobalAlignerMode
 
-def create_depth_maps(np_img_list, model, device, batch_size=1, niter=300, schedule='cosine', lr=0.01):
-    images = load_images_from_loaded(np_img_list, size=512, square_ok=True)
+def create_depth_maps(np_img_list, model, device, batch_size=1, niter=150, schedule='cosine', lr=0.01):
+    images = load_images_from_loaded(np_img_list, size=512, square_ok=True, verbose=False)
             
     pairs = make_pairs(images, scene_graph='complete', prefilter=None, symmetrize=True)
     output = inference(pairs, model, device, batch_size=1, verbose=False)
