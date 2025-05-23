@@ -82,8 +82,8 @@ if __name__ == '__main__':
                 depths = create_depth_maps(images, model, device, batch_size=1, niter=niter, schedule=schedule, lr=lr)
                 
                 for depth, cam in zip(depths, CAMERAS):
-                    near = obs_dict[f'{cam}_camera_near']
-                    far = obs_dict[f'{cam}_camera_far']
+                    near = obs_dict.misc[f'{cam}_camera_near']
+                    far = obs_dict.misc[f'{cam}_camera_far']
                     depth = (depth - near) / (far - near)
 
                     depth_rgb = float_array_to_rgb_image(depth, DEPTH_SCALE)
