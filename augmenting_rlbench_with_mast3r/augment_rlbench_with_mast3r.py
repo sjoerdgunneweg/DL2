@@ -1,6 +1,6 @@
 import numpy as np
 np.bool = np.bool_  # Fix for deprecated `np.bool`
-import tqdm
+from tqdm import tqdm
 import os
 import argparse
 import sys
