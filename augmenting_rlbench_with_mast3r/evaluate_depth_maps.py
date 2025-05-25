@@ -159,7 +159,7 @@ def main(data_path, tasks=None):
                     ts_metrics_list.append(cam_metrics)
 
                     # Store per-timestep metrics:
-                    per_timestep_metrics[task_dir][episode_name][str[ts]][cam] = cam_metrics
+                    per_timestep_metrics[task_dir][episode_name][str(ts)][cam] = cam_metrics
                     
                 
                 episode_metrics_list.extend(ts_metrics_list)
