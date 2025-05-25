@@ -9,6 +9,8 @@ matplotlib.use('Agg')  # Use non-GUI backend
 import matplotlib.pyplot as plt
 from skimage.metrics import structural_similarity as ssim
 from PIL import Image
+
+sys.path.append('../mast3r')
 from utils import image_to_float_array
 
 import json
