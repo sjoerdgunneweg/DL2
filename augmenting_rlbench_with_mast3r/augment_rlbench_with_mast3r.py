@@ -61,7 +61,7 @@ if __name__ == '__main__':
                       if os.path.isdir(os.path.join(episodes_path, d)) 
                       and d.startswith('episode')])
 
-        for episode_idx in range(92, len(episode_dirs)):
+        for episode_idx in range(len(episode_dirs)):
             print(f"  Current episode: {episode_idx}")
             try:
                 demo = get_stored_demo(episodes_path, episode_idx)
@@ -92,5 +92,6 @@ if __name__ == '__main__':
                     
                         depth_output_path = os.path.join(episode_path, f'{cam}_depth/{ts}_mast3r.png')
                         depth_rgb.save(depth_output_path)
-                except:
+                except Exception as e:
                     print(f"An error occured in episode {episode_idx}, ts {ts}")
+                    print(f"The error message is {e} \n")
