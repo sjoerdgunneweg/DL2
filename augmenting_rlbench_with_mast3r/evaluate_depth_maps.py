@@ -10,8 +10,7 @@ import matplotlib.pyplot as plt
 from skimage.metrics import structural_similarity as ssim
 from PIL import Image
 
-sys.path.append('../mast3r')
-from utils import image_to_float_array
+from peract_colab.rlbench.backend.utils import image_to_float_array
 
 import json
 from collections import defaultdict
