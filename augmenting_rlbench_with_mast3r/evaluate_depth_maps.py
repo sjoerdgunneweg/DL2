@@ -132,7 +132,7 @@ def main(data_path, tasks=None):
                       and d.startswith('episode')])
         task_metrics_list = []
 
-        for episode_idx in range(3, len(episode_dirs)):
+        for episode_idx in range(len(episode_dirs)):
             episode_name = f'episode{episode_idx}'
             print(f"  Current episode: {episode_name}")
             episode_path = os.path.join(episodes_path, episode_name)
