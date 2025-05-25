@@ -146,23 +146,27 @@ def main(data_path, tasks=None):
             episode_metrics_list = []
 
             for ts in range(len(obs)):
-                ts_metrics_list = []
+                try:
+                    ts_metrics_list = []
 
-                for cam in CAMERAS:
-                    near = obs[ts].misc['%s_camera_near' % (cam)]   
-                    far = obs[ts].misc['%s_camera_far' % (cam)]
+                    for cam in CAMERAS:
+                        near = obs[ts].misc['%s_camera_near' % (cam)]   
+                        far = obs[ts].misc['%s_camera_far' % (cam)]
 
-                    gt_depth = near + image_to_float_array(Image.open(os.path.join(episode_path, '%s_%s' % (cam, 'depth'), f'{ts}.png')), DEPTH_SCALE) * (far - near)
-                    pred_depth = image_to_float_array(Image.open(os.path.join(episode_path, '%s_%s' % (cam, 'depth'), f'{ts}_mast3r.png')), DEPTH_SCALE) * (far - near)
+                        gt_depth = near + image_to_float_array(Image.open(os.path.join(episode_path, '%s_%s' % (cam, 'depth'), f'{ts}.png')), DEPTH_SCALE) * (far - near)
+                        pred_depth = image_to_float_array(Image.open(os.path.join(episode_path, '%s_%s' % (cam, 'depth'), f'{ts}_mast3r.png')), DEPTH_SCALE) * (far - near)
 
-                    cam_metrics = compute_depth_metrics(gt_depth, pred_depth)
-                    ts_metrics_list.append(cam_metrics)
+                        cam_metrics = compute_depth_metrics(gt_depth, pred_depth)
+                        ts_metrics_list.append(cam_metrics)
 
-                    # Store per-timestep metrics:
-                    per_timestep_metrics[task_dir][episode_name][str(ts)][cam] = cam_metrics
+                        # Store per-timestep metrics:
+                        per_timestep_metrics[task_dir][episode_name][str(ts)][cam] = cam_metrics
+                        
                     
-                
-                episode_metrics_list.extend(ts_metrics_list)
+                    episode_metrics_list.extend(ts_metrics_list)
+                except Exception as e:
+                    print(f"    Failed to process timestep {ts} in episode {episode_name}: {e}")
+                    continue
             
             episode_metrics = aggregate_metrics(episode_metrics_list)
             episode_aggregates[task_dir].append({
