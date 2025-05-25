@@ -61,7 +61,7 @@ if __name__ == '__main__':
                       if os.path.isdir(os.path.join(episodes_path, d)) 
                       and d.startswith('episode')])
 
-        for episode_idx in range(1, len(episode_dirs)):
+        for episode_idx in range(3, len(episode_dirs)):
             print(f"  Current episode: {episode_idx}")
             try:
                 demo = get_stored_demo(episodes_path, episode_idx)
@@ -71,26 +71,26 @@ if __name__ == '__main__':
             episode_path = os.path.join(episodes_path, f'episode{episode_idx}')
 
             for ts in tqdm(range(len(demo))):
-                if ts == 6 or ts == 7:
-                    continue
-                obs_dict = extract_obs(demo._observations[ts], CAMERAS, t=ts)
+                try:
+                    obs_dict = extract_obs(demo._observations[ts], CAMERAS, t=ts)
+                    images = [
+                        np.transpose(obs_dict['front_rgb'], (1, 2, 0)),
+                        np.transpose(obs_dict['left_shoulder_rgb'], (1, 2, 0)),
+                        np.transpose(obs_dict['right_shoulder_rgb'], (1, 2, 0)),
+                        np.transpose(obs_dict['wrist_rgb'], (1, 2, 0))
+                    ]
 
-                images = [
-                    np.transpose(obs_dict['front_rgb'], (1, 2, 0)),
-                    np.transpose(obs_dict['left_shoulder_rgb'], (1, 2, 0)),
-                    np.transpose(obs_dict['right_shoulder_rgb'], (1, 2, 0)),
-                    np.transpose(obs_dict['wrist_rgb'], (1, 2, 0))
-                ]
+                    # Create depth maps (np arrays single channel) using the model
+                    depths = create_depth_maps(images, model, device, batch_size=1, niter=niter, schedule=schedule, lr=lr)
 
-                # Create depth maps (np arrays single channel) using the model
-                depths = create_depth_maps(images, model, device, batch_size=1, niter=niter, schedule=schedule, lr=lr)
-                
-                for depth, cam in zip(depths, CAMERAS):
-                    near = demo[ts].misc[f'{cam}_camera_near']
-                    far = demo[ts].misc[f'{cam}_camera_far']
-                    depth = (depth - near) / (far - near)
+                    for depth, cam in zip(depths, CAMERAS):
+                        near = demo[ts].misc[f'{cam}_camera_near']
+                        far = demo[ts].misc[f'{cam}_camera_far']
+                        depth = (depth - near) / (far - near)
 
-                    depth_rgb = float_array_to_rgb_image(depth, DEPTH_SCALE)
-                    
-                    depth_output_path = os.path.join(episode_path, f'{cam}_depth/{ts}_mast3r.png')
-                    depth_rgb.save(depth_output_path)
+                        depth_rgb = float_array_to_rgb_image(depth, DEPTH_SCALE)
+
+                        depth_output_path = os.path.join(episode_path, f'{cam}_depth/{ts}_mast3r.png')
+                        depth_rgb.save(depth_output_path)
+                except:
+                    print(f"An error occured in episode {episode_idx}, ts {ts}")
