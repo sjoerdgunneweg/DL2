@@ -51,6 +51,8 @@ def get_stored_demo(data_path, index):
     obs[i].right_shoulder_rgb = np.array(Image.open(os.path.join(episode_path, '%s_%s' % (CAMERA_RS, IMAGE_RGB), IMAGE_FORMAT % i)))
     obs[i].wrist_rgb = np.array(Image.open(os.path.join(episode_path, '%s_%s' % (CAMERA_WRIST, IMAGE_RGB), IMAGE_FORMAT % i)))    
 
+    print(get_depth_img_path(CAMERA_FRONT, i, episode_path))
+
     obs[i].front_depth = image_to_float_array(Image.open(get_depth_img_path(CAMERA_FRONT, i, episode_path)), DEPTH_SCALE)
     near = obs[i].misc['%s_camera_near' % (CAMERA_FRONT)]
     far = obs[i].misc['%s_camera_far' % (CAMERA_FRONT)]
