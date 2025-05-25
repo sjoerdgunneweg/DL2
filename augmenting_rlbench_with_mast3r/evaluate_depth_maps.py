@@ -101,7 +101,7 @@ def plot_comparison(gt, pred):
 
 
 # Main function to evaluate depth maps:
-def main(data_path, tasks=None):
+def main(data_path, tasks=None, out_path):
     # Constants
     CAMERAS = ['front', 'left_shoulder', 'right_shoulder', 'wrist']
     IMAGE_SIZE = 128
@@ -188,7 +188,7 @@ def main(data_path, tasks=None):
         "episode_aggregates": episode_aggregates
     }
 
-    with open('metrics_output.json', 'w') as f:
+    with open(out_path, 'w') as f:
         json.dump(output, f, indent=4)
 
     print("Evaluation complete. Metrics saved to metrics_output.json")            
@@ -206,5 +206,7 @@ if __name__ == "__main__":
                         help='Path to the data directory (default: /data/train)')
     parser.add_argument('--tasks', nargs='+', type=str, default=None,
                         help='List of specific task names to process (default: process all tasks)')
+    parser.add_argument('--out_path', type=str, default='metrics_output.json',
+                        help='The path where the metric output json is stored (default: metrics_output.json')
     args = parser.parse_args()
-    main(args.data_path, args.tasks)
+    main(args.data_path, args.tasks, args.out_path)

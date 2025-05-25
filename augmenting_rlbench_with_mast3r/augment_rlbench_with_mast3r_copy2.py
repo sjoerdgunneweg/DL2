@@ -32,6 +32,10 @@ if __name__ == '__main__':
                         help='Path to the data directory (default: /data/train)')
     parser.add_argument('--tasks', nargs='+', type=str, default=None,
                         help='List of specific task names to process (default: process all tasks)')
+    parser.add_argument('--begin', type=int, default=0,
+                        help='begining episode nr')
+    parser.add_argument('--end', type=int, default=None,
+                        help='ending episode nr')
     args = parser.parse_args()
 
     data_path = args.data_path
@@ -60,8 +64,11 @@ if __name__ == '__main__':
         episode_dirs = sorted([d for d in os.listdir(episodes_path) 
                       if os.path.isdir(os.path.join(episodes_path, d)) 
                       and d.startswith('episode')])
-
-        for episode_idx in range(92):
+        if args.end:
+            end = args.end
+        else:
+            end = range(len(episode_dirs))
+        for episode_idx in range(args.begin, end):
             print(f"  Current episode: {episode_idx}")
             try:
                 demo = get_stored_demo(episodes_path, episode_idx)
