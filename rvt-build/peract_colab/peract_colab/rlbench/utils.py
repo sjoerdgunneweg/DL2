@@ -27,11 +27,13 @@ VARIATION_NUMBER_PICKLE = 'variation_number.pkl'
 DEPTH_SCALE = 2**24 - 1
 
 # functions
+#-------------------------------------our_additions------------------------------------
 def get_depth_img_path(camera, i, episode_path):
   base_path = os.path.join(episode_path, f'{camera}_{IMAGE_DEPTH}')
   mast3r_path = os.path.join(base_path, f"{i}_mast3r.png")
   original_path = os.path.join(base_path, f"{i}.png")
   return mast3r_path if os.path.exists(mast3r_path) else original_path 
+#--------------------------------------------------------------------------------------
 
 def get_stored_demo(data_path, index):
   episode_path = os.path.join(data_path, EPISODE_FOLDER % index)
