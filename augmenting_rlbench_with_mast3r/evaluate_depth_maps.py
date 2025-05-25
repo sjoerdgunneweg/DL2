@@ -10,7 +10,9 @@ import matplotlib.pyplot as plt
 from skimage.metrics import structural_similarity as ssim
 from PIL import Image
 
-from peract_colab.rlbench.utils import image_to_float_array
+
+sys.path.append('peract_colab')
+from peract_colab.rlbench.backend.utils import image_to_float_array
 
 import json
 from collections import defaultdict
