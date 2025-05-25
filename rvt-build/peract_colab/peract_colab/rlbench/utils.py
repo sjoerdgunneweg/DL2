@@ -49,16 +49,7 @@ def get_stored_demo(data_path, index):
     obs[i].front_rgb = np.array(Image.open(os.path.join(episode_path, '%s_%s' % (CAMERA_FRONT, IMAGE_RGB), IMAGE_FORMAT % i)))
     obs[i].left_shoulder_rgb = np.array(Image.open(os.path.join(episode_path, '%s_%s' % (CAMERA_LS, IMAGE_RGB), IMAGE_FORMAT % i)))
     obs[i].right_shoulder_rgb = np.array(Image.open(os.path.join(episode_path, '%s_%s' % (CAMERA_RS, IMAGE_RGB), IMAGE_FORMAT % i)))
-    obs[i].wrist_rgb = np.array(Image.open(os.path.join(episode_path, '%s_%s' % (CAMERA_WRIST, IMAGE_RGB), IMAGE_FORMAT % i)))
-
-
-
-    print("Ik kom hier!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! \n \n \n JAAAAAAAAAAAAAAAAAAAAAAAAAa")
-    # if {i_mast3r} exist load it else use {i}
-    # ocerschrijven replay buffer met flag aan?
-    # sop he t op github
-
-    
+    obs[i].wrist_rgb = np.array(Image.open(os.path.join(episode_path, '%s_%s' % (CAMERA_WRIST, IMAGE_RGB), IMAGE_FORMAT % i)))    
 
     obs[i].front_depth = image_to_float_array(Image.open(get_depth_img_path(CAMERA_FRONT, i, episode_path)), DEPTH_SCALE)
     near = obs[i].misc['%s_camera_near' % (CAMERA_FRONT)]
