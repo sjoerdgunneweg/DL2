@@ -101,7 +101,7 @@ def plot_comparison(gt, pred):
 
 
 # Main function to evaluate depth maps:
-def main(data_path, tasks=None, out_path):
+def main(data_path, tasks=None, out_path='metrics_output.json'):
     # Constants
     CAMERAS = ['front', 'left_shoulder', 'right_shoulder', 'wrist']
     IMAGE_SIZE = 128
@@ -119,6 +119,7 @@ def main(data_path, tasks=None, out_path):
         task_dirs = os.listdir(data_path)
 
     for task_dir in task_dirs:
+        task_error_count = 0
         print(f"Current task: {task_dir}")
         task_path = os.path.join(data_path, task_dir)
         episodes_path = os.path.join(task_path, "all_variations/episodes")
@@ -167,6 +168,7 @@ def main(data_path, tasks=None, out_path):
                     episode_metrics_list.extend(ts_metrics_list)
                 except Exception as e:
                     print(f"    Failed to process timestep {ts} in episode {episode_name}: {e}")
+                    task_error_count += 1
                     continue
             
             episode_metrics = aggregate_metrics(episode_metrics_list)
@@ -181,7 +183,9 @@ def main(data_path, tasks=None, out_path):
         task_aggregates.append({
             "task": task_dir, 
             **task_metrics})
-    
+        
+        print(f"task: {task_dir} had {task_error_count} failed scenes")
+
     output = {
         "per_timestep_metrics": per_timestep_metrics,
         "task_aggregates": task_aggregates,
