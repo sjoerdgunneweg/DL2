@@ -1,6 +1,41 @@
 # DL2
 
-## MASt3R checkpoints
+## MASt3R
+
+### Benchmarking MASt3R on RLBench depth estimation
+To reproduce the results of the benchmarking of the depth estimation using MASt3R on the RLBench dataset the following steps can be followed.
+#### 1. Using MAST3R to predict depthmaps using the RLBench rgb images
+RVT-2 uses only the following cameras: front,
+left shoulder, right shoulder, and wrist. For this reason we only predict the depthmaps of these camera views. 
+
+augmenting_rlbench_with_mast3r/augment_rlbench_with_mast3r.py is used for this.
+##### Example used for reproducing the paper results
+```bash
+cd augmenting_rlbench_with_mast3r
+
+python augment_rlbench_with_mast3r.py --data_path ../../RLBench/data/train (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons
+
+python augment_rlbench_with_mast3r.py --data_path ../../RLBench/data/val (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons
+```
+
+(By default when no tasks are specified all tasks inside the provided data folder are processed.)
+Note that the predicted depthmaps are saved using the same method as the RLBench depthmaps making the images not interpretable without correct processing during loading them. So do not worry when they are not looking like much.
+
+#### 2. Evaluating the estimated depthmaps against the ground-truth depthmaps provided by RLBench
+For evaluating the depthmaps the metrics mentioned in the paper are used on each of the depthmaps. The metrics are both aggregated on episode level and task level. The metrics of each timestep is stored in a structured way together with the episode and task aggregates inside a json.
+
+augmenting_rlbench_with_mast3r/evaluate_depth_maps.py is used for this.
+##### Example used for reproducing the paper results
+```bash
+cd augmenting_rlbench_with_mast3r
+
+python evaluate_depth_maps.py --data_path ../../RLBench/data/train (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath train_metrics.json 
+
+python evaluate_depth_maps.py --data_path ../../RLBench/data/val (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath val_metrics.json 
+```
+
+
+### MASt3R checkpoints
 
 mkdir -p checkpoints/
 
