@@ -61,7 +61,7 @@ if __name__ == '__main__':
                       if os.path.isdir(os.path.join(episodes_path, d)) 
                       and d.startswith('episode')])
 
-        for episode_idx in range(3, len(episode_dirs)):
+        for episode_idx in range(0, len(episode_dirs)):
             print(f"  Current episode: {episode_idx}")
             try:
                 demo = get_stored_demo(episodes_path, episode_idx)

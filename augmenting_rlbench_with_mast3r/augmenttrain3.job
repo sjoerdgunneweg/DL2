@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=9
 #SBATCH --time=10:00:00
-#SBATCH --output=out_files/train_close_jar_0-10_%A.out
+#SBATCH --output=out_files/train_close_jar_10-20_%A.out
 
 module purge
 module load 2024
@@ -14,4 +14,4 @@ module load Anaconda3/2024.06-1
 
 source activate mast3r
 
-srun python augment_rlbench_with_mast3r_copy2.py --data_path /scratch-shared/scur2608/rlbench/data/train --tasks insert_onto_square_peg push_buttons --begin 0 --end 10
+srun python augment_rlbench_with_mast3r_copy2.py --data_path /scratch-shared/scur2608/rlbench/data/train --tasks insert_onto_square_peg push_buttons --begin 10 --end 20

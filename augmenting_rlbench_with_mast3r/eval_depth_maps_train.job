@@ -15,4 +15,4 @@ module load Anaconda3/2024.06-1
 source activate mast3r
 
 srun pip install scikit-image
-srun python evaluate_depth_maps.py --data_path /scratch-shared/scur2608/rlbench/data/train --tasks close_jar open_drawer --out_path train_metrics.json
+srun python evaluate_depth_maps.py --data_path /scratch-shared/scur2608/rlbench/data/train --tasks close_jar open_drawer insert_onto_square_peg push_buttons --out_path train_metrics.json
