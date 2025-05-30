@@ -87,15 +87,9 @@ Our MVS Results             |  Original MVS Results
 
 **Figure:** Depth Evaluation by Camera View
 
-\begin{figure}[h]
-    \centering
-    \subfigure{\includegraphics[width=0.48\textwidth]{figures/AbsRel_per_view.pdf}} 
-    \subfigure{\includegraphics[width=0.48\textwidth]{figures/RMSE_per_view.pdf}} 
-    \subfigure{\includegraphics[width=0.48\textwidth]{figures/ScaleInvRMSE_per_view.pdf}}
-    \subfigure{\includegraphics[width=0.48\textwidth]{figures/SSIM_per_view.pdf}}
-    \caption{Depth Evaluation by Camera View}
-    \label{fig:deptheval}
-\end{figure}
+
+![MASt3R depthmaps vs orignal on close\_jar](figures/rlbench.png)
+**Figure:** Qualitative results of depth estimation with the use of MASt3R. The scene depicted is timestep 42, episode 42 of the \texttt{close\_jar} training observation.
 
 ### RVT-2 Integration Results
 
