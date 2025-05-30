@@ -1,6 +1,6 @@
 # Enhancing Few-Shot Robotic Manipulation by Replacing Depth Sensors with Learned 3D Geometry from MASt3R
 
-This project investigates a fundamental challenge in robotic manipulation: the dependency on expensive RGB-D sensors for accurate 3D spatial understanding. We explore whether [MASt3R](https://arxiv.org/abs/2406.03052v2) (Matching And Stereo 3D Reconstruction), a 3D reconstruction method that works with RGB images alone, can effectively replace traditional depth sensors in robotic manipulation pipelines. We explored integrating depthmaps created using MASt3R with [RVT-2](https://robotic-view-transformer-2.github.io/) (Robotic Vision Transformer)
+This project investigates a fundamental challenge in robotic manipulation: the dependency on expensive RGB-D sensors for accurate 3D spatial understanding. We explore whether [MASt3R](https://europe.naverlabs.com/blog/mast3r-matching-and-stereo-3d-reconstruction/) (Matching And Stereo 3D Reconstruction), a 3D reconstruction method that works with RGB images alone, can effectively replace traditional depth sensors in robotic manipulation pipelines. We explored integrating depthmaps created using MASt3R with [RVT-2](https://robotic-view-transformer-2.github.io/) (Robotic Vision Transformer)
 
 **Authors:** Ruben Figge, Sjoerd Gunneweg, Jurgen de Heus, Mees Lindeman  
 **University of Amsterdam**
