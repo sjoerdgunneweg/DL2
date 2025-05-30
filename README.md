@@ -72,6 +72,11 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 ### RVT-2 Integration Results
 
+![Average Loss](figures/avg_loss.pdf)
+![Relative Loss](figures/rel_loss.pdf)
+
+**Figure:** Average and Relative Loss for RVT-2 with MASt3R vs. Original RGB-D Input.
+
 ## Reproducing Results
 
 ### Getting started:
