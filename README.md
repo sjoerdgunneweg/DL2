@@ -63,7 +63,7 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 ### MASt3R
 
-### Benchmarking MASt3R on RLBench depth estimation
+### Generating and Benchmarking the depthmaps estimated using MASt3R on RLBench
 To reproduce the results of the benchmarking of the depth estimation using MASt3R on the RLBench dataset the following steps can be followed.
 #### 1. Using MAST3R to predict depthmaps using the RLBench rgb images
 RVT-2 uses only the following cameras: front,
