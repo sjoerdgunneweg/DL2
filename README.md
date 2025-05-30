@@ -60,6 +60,22 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 ### MASt3R Reproducibility (DTU Dataset)
 
+As shown in the table below, our reproduction yielded
+worse results compared to those originally reported by MASt3R. Although we carefully followed the
+available instructions, this discrepancy could be due to undisclosed differences in procedure. Given
+the absence of detailed information, we conclude that MASt3R’s reported results for MVS are not
+entirely reproducible. However, the authors’ claim of achieving reasonable results in a zero-shot
+setting remains valid.
+
+| Methods                    | Acc. ↓ | Comp. ↓ | Overall ↓ |
+|---------------------------|--------|---------|-----------|
+| DUS3R (Original Results) [Wang et al., 2024][1]  | 2.677  | 0.805   | 1.741     |
+| MASt3R (Original Results) [Leroy et al., 2023][2] | 0.403  | 0.344   | 0.374     |
+| MASt3R (Our Reproduction) | 0.551  | 0.385   | 0.468     |
+
+[1]: https://arxiv.org/abs/2312.14132
+[2]: https://arxiv.org/abs/2406.09756
+
 ### Depth Map Quality Assessment (RLBench)
 
 ### RVT-2 Integration Results
@@ -99,8 +115,53 @@ rlbench/
 
 
 ### Reproduction of MASt3R evaluation on the DTU dataset
-**TODO**
+- **Step 1:** Install the following aditional packacge:
+```bash
+pip install open3d
+```
 
+- **Step 2:** Download the ground truth DTU pointclouds:
+```
+wget http://roboimagedata2.compute.dtu.dk/data/MVS/Points.zip
+```
+
+  Download the [DTU test scenes](https://drive.google.com/file/d/135oKPefcPTsdtLRzoDAQtPpHuoIrpRI_/view).
+
+  Extract the ObsMask folder from the SampleSet folder:
+```
+wget http://roboimagedata2.compute.dtu.dk/data/MVS/SampleSet.zip
+```
+
+ Make sure the directory containing the dataset is of the following structure:
+```
+data/
+└── dtu/
+    ├── Points/
+    |   └── stl/
+    ├── Scenes/
+    |   └── scan1/
+    |   └── ...
+    └── ObsMask/
+```
+
+- **Step 3:** Predict the pointclouds for DTU using MASt3R:
+```
+python mast3r/mast3r_predict_dtu.py --scene_root 'data/dtu/Scenes'
+
+python mast3r/mast3r_predict_dtu.py --scene_root 'data/dtu/Scenes' --scan_ids <SCAN NUMBER(s)> # For running a specific scene
+```
+
+- **Step 4:** Evaluate the predicted pointclouds using the ground truth DTU pointclouds:
+```
+python mast3r/mast3r_eval_dtu.py --data 'predictions/scan{}.ply' --dataset_dir 'data/dtu' # When predicted pointcloud is named "scan{ID_NUMBER}.ply"
+
+python mast3r/mast3r_eval_dtu.py --data 'predictions/scan{}.ply' --dataset_dir 'data/dtu' --scan_list <SCAN NUMBER(S)> # For evaluating a specific scan
+```
+
+- **Step 4:** Visualize predicted pointclouds:
+```
+python mast3r/viz_pointcloud.py --file <PATH TO PREDICTED POINTCLOUD>
+```
 
 ### Generating and Benchmarking the depthmaps estimated using MASt3R on RLBench
 To reproduce the results of the benchmarking of the depth estimation using MASt3R on the RLBench dataset the following steps can be followed.
