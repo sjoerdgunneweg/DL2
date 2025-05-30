@@ -99,7 +99,7 @@ rlbench/
 
 
 ### Reproduction of MASt3R evaluation on the DTU dataset
-<TODO>
+**TODO**
 
 
 ### Generating and Benchmarking the depthmaps estimated using MASt3R on RLBench
