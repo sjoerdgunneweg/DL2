@@ -275,7 +275,7 @@ export DATA_FOLDER=<DATA_FOLDER_LOCATION>
 
 # Enter the Apptainer container and run the training
 apptainer exec --nv \
---bind ~/DL2/rvt-build/peract_colab:/root/install/RVT/rvt/libs/peract_colab \
+--bind ~/mast3r-rvt2-integration/rvt-build/peract_colab:/root/install/RVT/rvt/libs/peract_colab \
 --bind $DATA_FOLDER \
 rvt2build.sif \
 bash -c "
