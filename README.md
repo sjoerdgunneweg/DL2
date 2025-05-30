@@ -71,11 +71,15 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 ![Our MVS Results](figures/pointcloud.png)
 ![Original MVS Results](figures/pointcloud_og.png)
 
-**Figure:** Qualitative MVS results comparison between results obtained by us and the original results from MASt3R
+Solarized dark             |  Solarized Ocean
+:-------------------------:|:-------------------------:
+![Our MVS Results](figures/pointcloud.png) |  ![Original MVS Results](figures/pointcloud_og.png)
+
+**Figure:** Qualitative MVS results comparison between results obtained by us (left) and the original results from MASt3R (right)
 
 ### Depth Map Quality Assessment (RLBench)
 
-
+# TODO 
 
 ### RVT-2 Integration Results
 
