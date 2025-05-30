@@ -1,6 +1,6 @@
 # Enhancing Few-Shot Robotic Manipulation by Replacing Depth Sensors with Learned 3D Geometry from MASt3R
 
-This project investigates a fundamental challenge in robotic manipulation: the dependency on expensive RGB-D sensors for accurate 3D spatial understanding. We explore whether MASt3R (Matching And Stereo 3D Reconstruction), a 3D reconstruction method that works with RGB images alone, can effectively replace traditional depth sensors in robotic manipulation pipelines.
+This project investigates a fundamental challenge in robotic manipulation: the dependency on expensive RGB-D sensors for accurate 3D spatial understanding. We explore whether [MASt3R]([https://arxiv.org/abs/2406.03052v2](https://arxiv.org/abs/2406.09756)) (Matching And Stereo 3D Reconstruction), a 3D reconstruction method that works with RGB images alone, can effectively replace traditional depth sensors in robotic manipulation pipelines.
 
 **Authors:** Ruben Figge, Sjoerd Gunneweg, Jurgen de Heus, Mees Lindeman  
 **University of Amsterdam**
