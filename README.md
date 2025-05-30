@@ -7,31 +7,33 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 
 ## Table of Contents
 
+## Table of Contents
+
+## Table of Contents
+
 - [Strengths and Weaknesses](#strengths-and-weaknesses)
   - [Strengths of MASt3R](#strengths-of-mast3r)
   - [Identified Weaknesses](#identified-weaknesses)
-- [Novel Contributions](#novel-contributions)
+- [Novel contributions](#novel-contributions)
 - [Results](#results)
   - [MASt3R Reproducibility (DTU Dataset)](#mast3r-reproducibility-dtu-dataset)
   - [Depth Map Quality Assessment (RLBench)](#depth-map-quality-assessment-rlbench)
   - [RVT-2 Integration Results](#rvt-2-integration-results)
 - [Reproducing Results](#reproducing-results)
-  - [Getting Started](#getting-started)
-  - [MASt3R](#mast3r)
-  - [Generating and Benchmarking the Depthmaps Estimated Using MASt3R on RLBench](#generating-and-benchmarking-the-depthmaps-estimated-using-mast3r-on-rlbench)
-    - [1. Using MASt3R to Predict Depthmaps Using the RLBench RGB Images](#1-using-mast3r-to-predict-depthmaps-using-the-rlbench-rgb-images)
-    - [2. Evaluating the Estimated Depthmaps Against the Ground-Truth](#2-evaluating-the-estimated-depthmaps-against-the-ground-truth)
+  - [Getting started:](#getting-started)
+  - [Reproduction of MASt3R evaluation on the DTU dataset](#reproduction-of-mast3r-evaluation-on-the-dtu-dataset)
+  - [Generating and Benchmarking the depthmaps estimated using MASt3R on RLBench](#generating-and-benchmarking-the-depthmaps-estimated-using-mast3r-on-rlbench)
   - [RVT-2](#rvt-2)
-  - [Setup Options](#setup-options)
-  - [Environment Setup](#environment-setup)
-  - [Data & Model Setup](#data--model-setup)
-  - [Running the Container](#running-the-container)
-  - [Evaluation](#evaluation)
-  - [Training or Evaluating Custom Models](#training-or-evaluating-custom-models)
-  - [Training from Scratch on MASt3R-Generated Data](#training-from-scratch-on-mast3r-generated-data)
 - [Conclusion](#conclusion)
-- [Description of Each Student's Contribution](#description-of-each-students-contribution)
+- [Description of each students contribution](#description-of-each-students-contribution)
+  - [All](#all)
+  - [Ruben](#ruben)
+  - [Sjoerd](#sjoerd)
+  - [Jurgen](#jurgen)
+  - [Mees](#mees)
 - [Acknowledgement](#acknowledgement)
+
+
 
 ## Strengths and Weaknesses
 
@@ -137,28 +139,28 @@ python evaluate_depth_maps.py --data_path <DATA_FOLDER_LOCATION> --tasks close_j
 
 This repository provides containerized options to run [RVT-2](https://github.com/nvlabs/rvt) for reproducibility and easier deployment. It supports both Docker and Singularity (Apptainer), including usage on HPC systems like Snellius.
 
-### Setup Options
+#### Setup Options
 
 You can run RVT-2 in three different ways:
 
-#### 1. Build Docker Image Locally
+##### 1. Build Docker Image Locally
 Use the provided Dockerfile to build the image:
 
 ```bash
 docker build -t rvt2:latest .
 ```
 
-#### 2. Use Prebuilt Docker Image
+##### 2. Use Prebuilt Docker Image
 Pull and run the prebuilt image from [DockerHub](https://hub.docker.com/repository/docker/meeslindeman/rvt2/general).
 
 ```bash
 docker build -t rvt2:latest .
 ```
 
-#### 3. Build Singularity Image (HPC / Snellius)
+##### 3. Build Singularity Image (HPC / Snellius)
 Use the `rvt2build.def` file with Apptainer (formerly Singularity). For more information on using Singularity on Snellius, see [Surfdesk](https://servicedesk.surf.nl/wiki/spaces/WIKI/pages/30660251/Apptainer+formerly+Singularity).
 
-### Environment Setup 
+#### Environment Setup 
 This should work automatically, make sure the following environment variables are set before running the container.
 
 ```bash
@@ -167,18 +169,18 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COPPELIASIM_ROOT
 export QT_QPA_PLATFORM_PLUGIN_PATH=$COPPELIASIM_ROOT
 export DISPLAY=:1.0
 ```
-### Data & Model Setup
+#### Data & Model Setup
 The dataset and pretrained model are not included in the container and must be set up manually.
 
-#### 1. Download Dataset
+##### 1. Download Dataset
 Use the [pre-generated dataset](https://drive.google.com/drive/folders/0B2LlLwoO3nfZfkFqMEhXWkxBdjJNNndGYl9uUDQwS1pfNkNHSzFDNGwzd1NnTmlpZXR1bVE?resourcekey=0-jRw5RaXEYRLe2W6aNrNFEQ) provided by [PerAct](https://github.com/peract/peract#download) that is obtained in step 4 of getting started.
 
-#### 2. Download Pretrained Model
+##### 2. Download Pretrained Model
 Download the [pretrained RVT-2 model](https://huggingface.co/ankgoyal/rvt/tree/main/rvt2). Place the model `model_99.pth` and the config files under the folder `RVT/rvt/runs/rvt2/`.
 
-### Running the Container
+#### Running the Container
 
-#### Docker Example
+##### Docker Example
 Replace the paths with the location of your `data/` and `runs/` directories:
 
 ```bash
@@ -189,7 +191,7 @@ docker run --gpus all -it \
   rvt2:latest
 ```
 
-#### Singularity Example
+##### Singularity Example
 Make sure to bind your local data and run directories, and use `--nv` for GPU support:
 
 ```bash
@@ -199,7 +201,7 @@ apptainer shell --nv \
   rvt2build.sif
 ```
 
-### Evaluation
+#### Evaluation
 To reproduce RVT-2 evaluation on RLBench:
 
 ```bash
@@ -216,12 +218,12 @@ xvfb-run python eval.py \
 
 Make sure paths match the bind mounts used in your Docker or Singularity command.
 
-### Training or Evaluating Custom Models
+#### Training or Evaluating Custom Models
 To train or evaluate RVT-2 on new data or models, follow the same steps as above, but point to your own dataset and model paths when launching the container and running the evaluation script. We also support training RVT-2 on pointmaps generated by MASt3R. Our pretrained models on MASt3R-generated data are hosted at:
 
 - [HuggingFace Repository](https://huggingface.co/meeslindeman/rvt-2/tree/main/mast3r)
 
-### Training from Scratch on MASt3R-Generated Data
+#### Training from Scratch on MASt3R-Generated Data
 
 To train RVT-2 using MASt3R-generated pointmaps, follow these steps:
 
