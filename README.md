@@ -111,9 +111,9 @@ augmenting_rlbench_with_mast3r/augment_rlbench_with_mast3r.py is used for this.
 ```bash
 cd augmenting_rlbench_with_mast3r
 
-python augment_rlbench_with_mast3r.py --data_path ../../RLBench/data/train (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons
+python augment_rlbench_with_mast3r.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons
 
-python augment_rlbench_with_mast3r.py --data_path ../../RLBench/data/val (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons
+python augment_rlbench_with_mast3r.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons
 ```
 
 (By default when no tasks are specified all tasks inside the provided data folder are processed.)
@@ -127,9 +127,9 @@ augmenting_rlbench_with_mast3r/evaluate_depth_maps.py is used for this.
 ```bash
 cd augmenting_rlbench_with_mast3r
 
-python evaluate_depth_maps.py --data_path ../../RLBench/data/train (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath train_metrics.json 
+python evaluate_depth_maps.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath train_metrics.json 
 
-python evaluate_depth_maps.py --data_path ../../RLBench/data/val (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath val_metrics.json 
+python evaluate_depth_maps.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath val_metrics.json 
 ```
 ### RVT-2
 
@@ -248,7 +248,7 @@ module load CUDA/11.7.0
 module load Xvfb/21.1.3-GCCcore-11.3.0
 
 # Set environment variables
-export DATA_FOLDER=<DATA_FOLDER_LOCATIOM>
+export DATA_FOLDER=<DATA_FOLDER_LOCATION>
 
 # Enter the Apptainer container and run the training
 apptainer exec --nv \
@@ -268,7 +268,7 @@ xvfb-run python train.py \
 
 ## Conclusion
 
-# TODO erin verwerken!
+### TODO erin verwerken!
 - **Reproducibility Challenges:** Limited documentation and missing evaluation scripts in the original implementation
 - **Domain Gap:** Unclear how well laboratory benchmark performance translates to real robotic scenarios
 - **Integration Complexity:** No existing framework for incorporating MASt3R outputs into manipulation pipelines
