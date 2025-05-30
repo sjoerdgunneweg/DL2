@@ -24,11 +24,6 @@ Recovering 3D structure from uncalibrated images is fundamental to computer visi
   - [RVT-2](#rvt-2)
 - [Conclusion](#conclusion)
 - [Description of each students contribution](#description-of-each-students-contribution)
-  - [All](#all)
-  - [Ruben](#ruben)
-  - [Sjoerd](#sjoerd)
-  - [Jurgen](#jurgen)
-  - [Mees](#mees)
 - [Acknowledgement](#acknowledgement)
 
 
