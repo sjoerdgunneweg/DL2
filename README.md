@@ -1,6 +1,29 @@
-# DL2
+# Enhancing Few-Shot Robotic Manipulation by Replacing Depth Sensors with Learned 3D Geometry from MASt3R
 
-## MASt3R
+**Authors:** Ruben Figge, Sjoerd Gunneweg, Jurgen de Heus, Mees Lindeman  
+**University of Amsterdam**
+
+## Introduction
+
+## Strengths, Weaknesses, and Motivation
+
+## Novel contributionas
+
+## Results
+
+### MASt3R Reproducibility (DTU Dataset)
+
+### Depth Map Quality Assessment (RLBench)
+
+### RVT-2 Integration Results
+
+## Conclusion
+
+## Description of each students contribution
+
+## Technical Setup
+
+### MASt3R
 
 ### Benchmarking MASt3R on RLBench depth estimation
 To reproduce the results of the benchmarking of the depth estimation using MASt3R on the RLBench dataset the following steps can be followed.
@@ -50,7 +73,7 @@ pip install scipy ftfy regex tqdm torch git+https://github.com/openai/CLIP.git e
 pip install scikit-image
 
 
-## RVT-2
+### RVT-2
 
 This repository provides containerized options to run [RVT-2](https://github.com/nvlabs/rvt) for reproducibility and easier deployment. It supports both Docker and Singularity (Apptainer), including usage on HPC systems like Snellius.
 
