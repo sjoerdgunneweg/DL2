@@ -115,9 +115,9 @@ augmenting_rlbench_with_mast3r/augment_rlbench_with_mast3r.py is used for this.
 ```bash
 cd augmenting_rlbench_with_mast3r
 
-python augment_rlbench_with_mast3r.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons
+python augment_rlbench_with_mast3r.py --data_path <TRAIN_DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons
 
-python augment_rlbench_with_mast3r.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons
+python augment_rlbench_with_mast3r.py --data_path <VAL_DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons
 ```
 
 (By default when no tasks are specified all tasks inside the provided data folder are processed.)
@@ -131,9 +131,7 @@ augmenting_rlbench_with_mast3r/evaluate_depth_maps.py is used for this.
 ```bash
 cd augmenting_rlbench_with_mast3r
 
-python evaluate_depth_maps.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath train_metrics.json 
-
-python evaluate_depth_maps.py --data_path <DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath val_metrics.json 
+python evaluate_depth_maps.py --data_path <TRAIN_DATA_FOLDER_LOCATION> --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath train_metrics.json 
 ```
 ### RVT-2
 
