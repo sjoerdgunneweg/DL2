@@ -68,12 +68,14 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 **Table:** Accuracy (Acc.), Completeness (Comp.), and Overall (Chamfer distance) scores for MASt3R evaluated on the DTU dataset. Lower is better for all metrics. Original results compared with our reproduced results.
 
-### Depth Map Quality Assessment (RLBench)
-
 ![Our MVS Results](figures/pointcloud.png)
 ![Original MVS Results](figures/pointcloud_og.png)
 
 **Figure:** Qualitative MVS results comparison between results obtained by us and the original results from MASt3R
+
+### Depth Map Quality Assessment (RLBench)
+
+
 
 ### RVT-2 Integration Results
 
