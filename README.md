@@ -18,6 +18,7 @@ Recovering 3D structure from uncalibrated images is fundamental to computer visi
 - [Results](#results)
   - [MASt3R Reproducibility (DTU Dataset)](#mast3r-reproducibility-dtu-dataset)
   - [Depth Map Quality Assessment (RLBench)](#depth-map-quality-assessment-rlbench)
+  - [RVT-2 Reprocability Results](#rvt-2-reprocability-results)
   - [RVT-2 Integration Results](#rvt-2-integration-results)
 - [Reproducing Results](#reproducing-results)
   - [Getting started:](#getting-started)
@@ -88,13 +89,7 @@ Our MVS Results             |  Original MVS Results
 ![MASt3R depthmaps vs orignal on close\_jar](figures/rlbench.png)
 **Figure:** Qualitative results of depth estimation with the use of MASt3R. The scene depicted is timestep 42, episode 42 of the close\_jar training observation.
 
-### RVT-2 Integration Results
-
-Average Loss             |  Relative Loss
-:-------------------------:|:-------------------------:
-![Average Loss](figures/avg_loss.png) |  ![Relative Loss](figures/rel_loss.png)
-
-**Figure:** Average and Relative Loss for RVT-2 with MASt3R vs. Original RGB-D Input.
+### RVT-2 Reprocability Results
 
 <div align="center">
 
@@ -106,6 +101,14 @@ Average Loss             |  Relative Loss
 **Table:** Evaluation accuracy (%).
 
 </div>
+
+### RVT-2 Integration Results
+
+Average Loss             |  Relative Loss
+:-------------------------:|:-------------------------:
+![Average Loss](figures/avg_loss.png) |  ![Relative Loss](figures/rel_loss.png)
+
+**Figure:** Average and Relative Loss for RVT-2 with MASt3R vs. Original RGB-D Input.
 
 ## Reproducing Results
 
