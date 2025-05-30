@@ -98,7 +98,9 @@ rlbench/
 ```
 
 
-### MASt3R
+### Reproduction of MASt3R evaluation on the DTU dataset
+<TODO>
+
 
 ### Generating and Benchmarking the depthmaps estimated using MASt3R on RLBench
 To reproduce the results of the benchmarking of the depth estimation using MASt3R on the RLBench dataset the following steps can be followed.
