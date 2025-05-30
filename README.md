@@ -79,10 +79,10 @@ Our MVS Results             |  Original MVS Results
 
 ### Depth Map Quality Assessment (RLBench)
 
-| Average Loss             | Relative Loss             |
+| Average ScaleInvRMSE per view           | Average SSIM per view             |
 |:------------------------:|:-------------------------:|
 | ![Average Loss](figures/AbsRel_per_view.png) | ![Relative Loss](figures/RMSE_per_view.png) |
-| Average Loss             | Relative Loss             |
+| Average AbsRel per view             | Average AbsRel per view             |
 | ![RGB-D Input](figures/ScaleInvRMSE_per_view.png) | ![MASt3R Input](figures/SSIM_per_view.png) |
 
 **Figure:** Depth Evaluation by Camera View
