@@ -260,6 +260,7 @@ A large portion of the code in this project is directly borrowed from the follow
 
 - [MASt3R](https://europe.naverlabs.com/blog/mast3r-matching-and-stereo-3d-reconstruction/)
 - [RVT-2](https://robotic-view-transformer-2.github.io/)
+- [PerAct Colab](https://github.com/peract/peract_colab/tree/master)
 
 We would like to sincerely thank the authors of these repositories for publically sharing their code.
 
