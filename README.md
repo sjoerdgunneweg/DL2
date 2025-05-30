@@ -66,7 +66,7 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 | MASt3R (Original Results)            | 0.403  | 0.344    | 0.374      |
 | MASt3R (Our Reproduction)            | 0.551  | 0.385    | 0.468      |
 
-Accuracy (Acc.), Completeness (Comp.), and Overall (Chamfer distance) scores for MASt3R evaluated on the DTU dataset. Lower is better for all metrics. Original results compared with our reproduced results.
+**Table:** Accuracy (Acc.), Completeness (Comp.), and Overall (Chamfer distance) scores for MASt3R evaluated on the DTU dataset. Lower is better for all metrics. Original results compared with our reproduced results.
 
 ### Depth Map Quality Assessment (RLBench)
 
