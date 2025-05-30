@@ -169,14 +169,7 @@ export DISPLAY=:1.0
 The dataset and pretrained model are not included in the container and must be set up manually.
 
 #### 1. Download Dataset
-Download the [pre-generated dataset](https://drive.google.com/drive/folders/0B2LlLwoO3nfZfkFqMEhXWkxBdjJNNndGYl9uUDQwS1pfNkNHSzFDNGwzd1NnTmlpZXR1bVE?resourcekey=0-jRw5RaXEYRLe2W6aNrNFEQ) provided by [PerAct](https://github.com/peract/peract#download). Place the contents under the following directory structure:
-
-```bash
-RVT/rvt/data/
-├── train/
-├── val/
-└── test/
-```
+Use the [pre-generated dataset](https://drive.google.com/drive/folders/0B2LlLwoO3nfZfkFqMEhXWkxBdjJNNndGYl9uUDQwS1pfNkNHSzFDNGwzd1NnTmlpZXR1bVE?resourcekey=0-jRw5RaXEYRLe2W6aNrNFEQ) provided by [PerAct](https://github.com/peract/peract#download) that is obtained in step 4 of getting started.
 
 #### 2. Download Pretrained Model
 Download the [pretrained RVT-2 model](https://huggingface.co/ankgoyal/rvt/tree/main/rvt2). Place the model `model_99.pth` and the config files under the folder `RVT/rvt/runs/rvt2/`.
