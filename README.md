@@ -259,13 +259,22 @@ xvfb-run python train.py \
 
 ## Description of each students contribution
 
+### All
+Contributed to writing of the report
+
 ### Ruben
+- MASt3R depthmap creation
 
 ### Sjoerd
+- Realizing RVT-2 in Snellius
+- MASt3R integration with RVT-2
 
 ### Jurgen
+- Reproduction MASt3R's MVS results on DTU
 
 ### Mees
+- Realizing RVT-2 in Snellius
+- MASt3R integration with RVT-2
 
 ## Acknowledgement
 A large portion of the code in this project is directly borrowed from the following repositories:
