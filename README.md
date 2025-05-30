@@ -61,6 +61,27 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 ## Reproducing Results
 
+### Getting started:
+
+#### Install
+
+- Step 1: Create the environment.
+
+ **MASt3R checkpoints**
+
+mkdir -p checkpoints/
+
+wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth -P checkpoints/
+
+wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_trainingfree.pth -P checkpoints/
+
+wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_codebook.pkl -P checkpoints/
+
+## additional reqs install:
+pip install scipy ftfy regex tqdm torch git+https://github.com/openai/CLIP.git einops pyrender==0.1.45 trimesh==3.9.34 pycollada==0.6 
+pip install scikit-image
+
+
 ### MASt3R
 
 ### Generating and Benchmarking the depthmaps estimated using MASt3R on RLBench
@@ -94,23 +115,6 @@ python evaluate_depth_maps.py --data_path ../../RLBench/data/train (TODO check p
 
 python evaluate_depth_maps.py --data_path ../../RLBench/data/val (TODO check path) --tasks close_jar insert_onto_square_peg open_drawer push_buttons --outpath val_metrics.json 
 ```
-
-
-### MASt3R checkpoints
-
-mkdir -p checkpoints/
-
-wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth -P checkpoints/
-
-wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_trainingfree.pth -P checkpoints/
-
-wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_codebook.pkl -P checkpoints/
-
-## additional reqs install:
-pip install scipy ftfy regex tqdm torch git+https://github.com/openai/CLIP.git einops pyrender==0.1.45 trimesh==3.9.34 pycollada==0.6 
-pip install scikit-image
-
-
 ### RVT-2
 
 This repository provides containerized options to run [RVT-2](https://github.com/nvlabs/rvt) for reproducibility and easier deployment. It supports both Docker and Singularity (Apptainer), including usage on HPC systems like Snellius.
