@@ -5,8 +5,6 @@
 
 ## Table of Contents
 
-## Table of Contents
-
 - [Introduction](#introduction)  
 - [Strengths, Weaknesses, and Motivation](#strengths-weaknesses-and-motivation)  
 - [Novel Contributions](#novel-contributionas)  
