@@ -306,7 +306,7 @@ This project explored the integration of MASt3R-generated 3D pointmaps into RVT-
 ## Description of each students contribution
 
 **All**
-Contributed to writing of the report
+- Contributed to writing of the report
 
 **Ruben**
 - MASt3R depthmap creation
