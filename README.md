@@ -232,3 +232,13 @@ You can create a job script like the one below (example for Snellius using Appta
 - **Integration Complexity:** No existing framework for incorporating MASt3R outputs into manipulation pipelines
 
 ## Description of each students contribution
+
+## Acknowledgement
+A large portion of the code in this project is directly borrowed from the following repositories:
+
+- [MASt3R](https://europe.naverlabs.com/blog/mast3r-matching-and-stereo-3d-reconstruction/)
+- [RVT-2](https://robotic-view-transformer-2.github.io/)
+
+We would like to sincerely thank the authors of these repositories for publically sharing their code.
+
+
