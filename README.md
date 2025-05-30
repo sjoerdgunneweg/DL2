@@ -259,6 +259,14 @@ xvfb-run python train.py \
 
 ## Description of each students contribution
 
+### Ruben
+
+### Sjoerd
+
+### Jurgen
+
+### Mees
+
 ## Acknowledgement
 A large portion of the code in this project is directly borrowed from the following repositories:
 
