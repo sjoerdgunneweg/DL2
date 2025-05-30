@@ -7,10 +7,6 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 
 ## Table of Contents
 
-## Table of Contents
-
-## Table of Contents
-
 - [Strengths and Weaknesses](#strengths-and-weaknesses)
   - [Strengths of MASt3R](#strengths-of-mast3r)
   - [Identified Weaknesses](#identified-weaknesses)
