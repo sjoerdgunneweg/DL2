@@ -62,24 +62,35 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 ## Reproducing Results
 
 ### Getting started:
+- **Step 1:** Create the environment. We recommend following the installation steps 2 and 3 specified in the README of the [MASt3R](https://europe.naverlabs.com/blog/mast3r-matching-and-stereo-3d-reconstruction/) repository for creating a conda environment.
 
-#### Install
+- **Step 2:** Downloading and adding the MASt3R model checkpoints.
 
-- Step 1: Create the environment.
+```bash
+mkdir -p mast3r/checkpoints/
 
- **MASt3R checkpoints**
+wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth -P mast3r/checkpoints/
 
-mkdir -p checkpoints/
+wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_trainingfree.pth -P mast3r/checkpoints/
 
-wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric.pth -P checkpoints/
+wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_codebook.pkl -P mast3r/checkpoints/
+```
 
-wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_trainingfree.pth -P checkpoints/
+- **Step 3:** Install additional packages into the conda environment. 
+```bash
+pip install scipy ftfy regex tqdm torch git+https://github.com/openai/CLIP.git einops pyrender==0.1.45 trimesh==3.9.34 pycollada==0.6 scikit-image
+```
 
-wget https://download.europe.naverlabs.com/ComputerVision/MASt3R/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric_retrieval_codebook.pkl -P checkpoints/
-
-## additional reqs install:
-pip install scipy ftfy regex tqdm torch git+https://github.com/openai/CLIP.git einops pyrender==0.1.45 trimesh==3.9.34 pycollada==0.6 
-pip install scikit-image
+- **Step 4:** Download the [pre-generated observations](https://drive.google.com/drive/folders/0B2LlLwoO3nfZfkFqMEhXWkxBdjJNNndGYl9uUDQwS1pfNkNHSzFDNGwzd1NnTmlpZXR1bVE?resourcekey=0-jRw5RaXEYRLe2W6aNrNFEQ) of the [RLBench](https://github.com/stepjam/RLBench) dataset provided by [PerAct](https://github.com/peract/peract#download). Make sure the directory containing the dataset is of the following structure:
+```
+rlbench/
+├── train/
+|   └── ...
+├── val/
+|   └── ...
+└── test/
+    └── ...
+```
 
 
 ### MASt3R
