@@ -60,6 +60,12 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 ### MASt3R Reproducibility (DTU Dataset)
 
+| Methods                              | Acc. ↓ | Comp. ↓ | Overall ↓ |
+|--------------------------------------|--------|----------|------------|
+| DUSt3R (Original Results)            | 2.677  | 0.805    | 1.741      |
+| MASt3R (Original Results)            | 0.403  | 0.344    | 0.374      |
+| MASt3R (Our Reproduction)            | 0.551  | 0.385    | 0.468      |
+
 ### Depth Map Quality Assessment (RLBench)
 
 ### RVT-2 Integration Results
