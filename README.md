@@ -301,10 +301,7 @@ xvfb-run python train.py \
 
 ## Conclusion
 
-### TODO erin verwerken!
-- **Reproducibility Challenges:** Limited documentation and missing evaluation scripts in the original implementation
-- **Domain Gap:** Unclear how well laboratory benchmark performance translates to real robotic scenarios
-- **Integration Complexity:** No existing framework for incorporating MASt3R outputs into manipulation pipelines
+This project explored the integration of MASt3R-generated 3D pointmaps into RVT-2 to replace conventional RGB-D inputs for high-precision robotic manipulation. Our results show that RVT-2 trained on MASt3R input achieves comparable average total loss to the original setup, indicating that the overall pipeline is viable. Task-specific analysis revealed notable degradation in grip-related performance. A possible explanation is that MASt3R's depth predictions were especially poor for the wrist camera view, highly linked to grasp evaluation, leading to increased grip loss. While the approach shows promise, future work should aim to improve reconstruction quality at critical viewpoints where depth errors significantly impact gripper performance. Additionally, future extensions could explore feeding MASt3R's dense feature maps directly into RVT-2's transformer backbone as an alternative to pointmaps.
 
 ## Description of each students contribution
 
