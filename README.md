@@ -30,6 +30,15 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 
 ## Strengths, Weaknesses, and Motivation
 
+### Strengths of MASt3R
+- **Hardware Independence:** Eliminates the need for expensive RGB-D sensors and complex calibration procedures
+- **Robustness:** Demonstrates strong performance under large baselines and low-texture scenes
+
+### Identified Weaknesses
+- **Reproducibility Challenges:** Limited documentation and missing evaluation scripts in the original implementation
+- **Domain Gap:** Unclear how well laboratory benchmark performance translates to real robotic scenarios
+- **Integration Complexity:** No existing framework for incorporating MASt3R outputs into manipulation pipelines
+
 ## Novel contributions
 
 ## Results
