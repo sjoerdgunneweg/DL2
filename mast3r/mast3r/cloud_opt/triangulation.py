@@ -69,9 +69,9 @@ def matches_to_depths(intrinsics, # input camera intrinsics     [B, Ncams, 3, 3]
         depths = points_3d_camera.view(sub_batchsize,H,W,3)[..., 2] # [B,H,W]
         
         # Cat results
-        out_aggregated_points.append(aggregated_points.cpu())
-        out_depths.append(depths.cpu())
-        out_confs.append(confs.sum(dim=1).cpu())
+        out_aggregated_points.append(aggregated_points)
+        out_depths.append(depths)
+        out_confs.append(confs.sum(dim=1))
     
     out_aggregated_points = torch.cat(out_aggregated_points,dim=0)
     out_depths            = torch.cat(out_depths,dim=0)

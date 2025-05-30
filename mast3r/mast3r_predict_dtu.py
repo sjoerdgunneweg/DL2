@@ -3,8 +3,8 @@ import trimesh
 import os, copy, torch
 from glob import glob
 import re
-from collections import defaultdict
 import torchvision.transforms as tvf
+import argparse
 
 from mast3r.image_pairs import make_pairs
 from mast3r.cloud_opt.sparse_ga import convert_dust3r_pairs_naming
@@ -24,13 +24,15 @@ from dust3r_visloc.datasets.utils import get_HW_resolution
 
 def torgb(x): return (x[0].permute(1, 2, 0).numpy() * .5 + .5).clip(min=0., max=1.)
 
-def load_gt_camera(image_path, cam_dir, device='cuda', orig_size=(1200, 1600), new_size=(1200, 1600)):
+def load_gt_camera(image_path, cam_dict, device, orig_size, new_size):
+    """Load ground truth camera parameters and adjust intrinsics for image resizing"""
     scale_y = new_size[0] / orig_size[0]
     scale_x = new_size[1] / orig_size[1]
 
-    # Extract image ID
-    image_id = int(re.search(r'(\d+)_3_r5000', image_path).group(1)) - 1
-    cam_path = f"{cam_dir}/{image_id:08d}_cam.txt"
+    # Extract image ID from filename format: "00000034.jpg"
+    image_id = int(re.search(r'(\d+)', os.path.basename(image_path)).group(1))
+
+    cam_path = cam_dict[image_id]
 
     with open(cam_path, 'r') as f:
         lines = f.readlines()
@@ -44,13 +46,13 @@ def load_gt_camera(image_path, cam_dir, device='cuda', orig_size=(1200, 1600), n
     K[0, 2] *= scale_x  # cx
     K[1, 2] *= scale_y  # cy
 
-    # Convert to torch tensors
     K_tensor = torch.tensor(K, dtype=torch.float32, device=device)         # [3, 3]
     ext_tensor = torch.tensor(ext[:3], dtype=torch.float32, device=device) # [3, 4]
 
     return K_tensor, ext_tensor
 
 def resize_image_to_max(max_image_size, rgb, K):
+    """Resize image to fit within maximum dimension while maintaining aspect ratio and rescale intrinsics accordingly"""
     if rgb.ndim == 4:
         rgb = rgb.squeeze(0)
     H, W = rgb.shape[1:]
@@ -74,6 +76,7 @@ def resize_image_to_max(max_image_size, rgb, K):
                                   [0, HMax / H, 0],
                                   [0, 0, 1]])
 
+        # Rescale intrinsics
         K_np = K.cpu().numpy() if isinstance(K, torch.Tensor) else K
         new_K = opencv_to_colmap_intrinsics(K_np)
         new_K[0, :] *= WMax / W
@@ -92,12 +95,11 @@ def resize_image_to_max(max_image_size, rgb, K):
     return rgb_tensor.unsqueeze(0), new_K, to_orig_max, to_resize_max, (HMax, WMax)
 
 def extract_pointcloud(imgs, pts3d, mask):
-    # Convert to numpy arrays if needed
+    """Extract valid 3D points and colors from reconstruction to create point cloud"""
     pts3d = [p if isinstance(p, np.ndarray) else p.cpu().numpy() for p in pts3d]
     imgs = [i if isinstance(i, np.ndarray) else i.cpu().numpy() for i in imgs]
     mask = [m if isinstance(m, np.ndarray) else m.cpu().numpy() for m in mask]
 
-    # Fix: Reshape pts3d to 2D before applying mask
     pts_list = []
     col_list = []
     
@@ -113,7 +115,6 @@ def extract_pointcloud(imgs, pts3d, mask):
         pts_list.append(p_reshaped[m_flat])
         col_list.append(i_reshaped[m_flat])
     
-    # Concatenate all valid points and colors
     pts = np.concatenate(pts_list, axis=0)
     col = np.concatenate(col_list, axis=0)
 
@@ -126,11 +127,12 @@ def extract_pointcloud(imgs, pts3d, mask):
 
     return pointcloud
 
-def get_coarse_matches(query_view, map_view, model, device, pixel_tol, fast_nn_params, edge_border=3):
+def get_coarse_matches(query_view, map_view, model, device, fast_nn_params, edge_border=3):
+    """Find initial coarse 2D-2D correspondences between query and map images"""
     imgs = []
     for idx, img in enumerate([query_view['rgb_rescaled'], map_view['rgb_rescaled']]):
-        imgs.append(dict(img=img.unsqueeze(0), true_shape=np.int32([img.shape[1:]]),
-                         idx=idx, instance=str(idx)))
+        imgs.append(dict(img=img, true_shape=np.int32([img.shape[-2:]]),
+                        idx=idx, instance=str(idx)))
     output = inference([tuple(imgs)], model, device, batch_size=1, verbose=False)
     pred1, pred2 = output['pred1'], output['pred2']
     conf_list = [pred1['desc_conf'].squeeze(0).cpu().numpy(), pred2['desc_conf'].squeeze(0).cpu().numpy()]
@@ -141,29 +143,21 @@ def get_coarse_matches(query_view, map_view, model, device, pixel_tol, fast_nn_p
     if len(PQ) == 0 or len(PM) == 0:
         return [], [], []
 
-    if pixel_tol == 0:
-        matches_im_map, matches_im_query = fast_reciprocal_NNs(PM, PQ, subsample_or_initxy1=8, **fast_nn_params)
-        HM, WM = map_view['rgb_rescaled'].shape[1:]
-        HQ, WQ = query_view['rgb_rescaled'].shape[1:]
-        # ignore small border around the edge
-        valid_matches_map = (matches_im_map[:, 0] >= edge_border) & (matches_im_map[:, 0] < WM - edge_border) & (
-            matches_im_map[:, 1] >= edge_border) & (matches_im_map[:, 1] < HM - edge_border)
-        valid_matches_query = (matches_im_query[:, 0] >= edge_border) & (matches_im_query[:, 0] < WQ - edge_border) & (
-            matches_im_query[:, 1] >= edge_border) & (matches_im_query[:, 1] < HQ - edge_border)
-        valid_matches = valid_matches_map & valid_matches_query
-        matches_im_map = matches_im_map[valid_matches]
-        matches_im_query = matches_im_query[valid_matches]
-        matches_confs = []
-    else:
-        H1, W1, DIM1 = PM.shape
-        H2, W2, DIM2 = PQ.shape
-        assert DIM1 == DIM2
-        yM, xM = np.mgrid[0:H1, 0:W1].reshape(2, -1)
-        matches_im_map, matches_im_query = fast_reciprocal_NNs(PM, PQ, (xM, yM), pixel_tol=pixel_tol, **fast_nn_params)
-        matches_confs = np.minimum(
-            conf_list[1][matches_im_map[:, 1], matches_im_map[:, 0]],
-            conf_list[0][matches_im_query[:, 1], matches_im_query[:, 0]]
-        )
+    matches_im_map, matches_im_query = fast_reciprocal_NNs(PM, PQ, subsample_or_initxy1=8, **fast_nn_params)
+    HM, WM = map_view['rgb_rescaled'].shape[-2:]
+    HQ, WQ = query_view['rgb_rescaled'].shape[-2:]
+    # ignore small border around the edge
+    valid_matches_map = (matches_im_map[:, 0] >= edge_border) & (matches_im_map[:, 0] < WM - edge_border) & (
+        matches_im_map[:, 1] >= edge_border) & (matches_im_map[:, 1] < HM - edge_border)
+    valid_matches_query = (matches_im_query[:, 0] >= edge_border) & (matches_im_query[:, 0] < WQ - edge_border) & (
+        matches_im_query[:, 1] >= edge_border) & (matches_im_query[:, 1] < HQ - edge_border)
+    valid_matches = valid_matches_map & valid_matches_query
+    matches_im_map = matches_im_map[valid_matches]
+    matches_im_query = matches_im_query[valid_matches]
+    matches_confs = np.minimum(
+        conf_list[1][matches_im_map[:, 1], matches_im_map[:, 0]],
+        conf_list[0][matches_im_query[:, 1], matches_im_query[:, 0]]
+    )
 
     # from cv2 to colmap
     matches_im_query = matches_im_query.astype(np.float64)
@@ -183,9 +177,8 @@ def get_coarse_matches(query_view, map_view, model, device, pixel_tol, fast_nn_p
 
     return matches_im_query, matches_im_map, matches_confs
 
-def get_fine_matches(query_views, map_views, model, device, pixel_tol, fast_nn_params):
-    assert pixel_tol > 0
-
+def get_fine_matches(query_views, map_views, model, device, fast_nn_params):
+    """Extract high-resolution matches from cropped image regions"""
     # Run the network on the cropped image regions and extract descriptors + confidence
     output = crops_inference([query_views, map_views], model, device, verbose=False)
     pred1, pred2 = output['pred1'], output['pred2']
@@ -198,15 +191,9 @@ def get_fine_matches(query_views, map_views, model, device, pixel_tol, fast_nn_p
     matches_im_map, matches_im_query, matches_confs = [], [], []
 
     for ppi, (pp1, pp2, cc11, cc21) in enumerate(zip(descs1, descs2, confs1, confs2)):
-        H1, W1, DIM1 = pp2.shape
-        H2, W2, DIM2 = pp1.shape
-        assert DIM1 == DIM2
-
-        y1, x1 = np.mgrid[0:H1, 0:W1].reshape(2, -1)
-
         # Run reciprocal NN match with fast filtering
         matches_im_map_ppi, matches_im_query_ppi = fast_reciprocal_NNs(
-            pp2, pp1, subsample_or_initxy1=(x1, y1), pixel_tol=pixel_tol, **fast_nn_params
+            pp2, pp1, subsample_or_initxy1=8, pixel_tol=0, **fast_nn_params
         )
 
         # Compute confidence for each match as the minimum of the two confidences
@@ -216,7 +203,7 @@ def get_fine_matches(query_views, map_views, model, device, pixel_tol, fast_nn_p
             conf_list_ppi[0][matches_im_query_ppi[:, 1], matches_im_query_ppi[:, 0]]
         )
 
-        # inverse operation where we uncrop pixel coordinates
+        # Inverse operation to uncrop pixel coordinates
         matches_im_map_ppi = geotrf(map_views['to_orig'][ppi].cpu().numpy(), matches_im_map_ppi.copy(), norm=True)
         matches_im_query_ppi = geotrf(query_views['to_orig'][ppi].cpu().numpy(), matches_im_query_ppi.copy(), norm=True)
 
@@ -233,9 +220,9 @@ def get_fine_matches(query_views, map_views, model, device, pixel_tol, fast_nn_p
     
     return matches_im_query, matches_im_map, matches_confs
 
-def get_matches(query_view, map_view, coarse_to_fine, model, device, pixel_tol):
+def get_matches(query_view, map_view, coarse_to_fine, model, device):
+    """Get 2D-2D correspondences between query and map images using coarse-to-fine strategy"""
     maxdim = max(model.patch_embed.img_size)
-
     H, W = query_view['true_shape'][0]
     map_rgb_tensor = map_view['img'].squeeze(0).permute(1, 2, 0)
     query_rgb_tensor = query_view['img'].squeeze(0).permute(1, 2, 0)
@@ -243,37 +230,31 @@ def get_matches(query_view, map_view, coarse_to_fine, model, device, pixel_tol):
     query_K = query_view['intrinsics'].cpu().numpy()
 
     # Resize images and get intrinsic transforms
-    query_view['rgb_rescaled'], _, query_view['to_orig'], query_to_resize_max, _ = resize_image_to_max(
+    query_view['rgb_rescaled'], _, query_view['to_orig'], _, _ = resize_image_to_max(
         maxdim, query_view['img'], query_view['intrinsics'])
-    map_view['rgb_rescaled'], _, map_view['to_orig'], map_to_resize_max, _ = resize_image_to_max(
+    map_view['rgb_rescaled'], _, map_view['to_orig'], _, _ = resize_image_to_max(
         maxdim, map_view['img'], map_view['intrinsics'])
-    
-    assert torch.allclose(query_rgb_tensor, query_view['img'].squeeze(0).permute(1, 2, 0)), "query_view['img'] was modified"
-    assert np.allclose(query_K, query_view['intrinsics'].cpu().numpy()), "query_view['intrinsics'] was modified"
     
     fast_nn_params = dict(device=device, dist='dot', block_size=2**13)
 
     if coarse_to_fine and (maxdim < max(W, H)):
         # Coarse matches on downscaled images
         coarse_matches_im0, coarse_matches_im1, _ = get_coarse_matches(
-            query_view, map_view, model, device, 0, fast_nn_params)
-
-        coarse_matches_im0 = geotrf(query_to_resize_max, coarse_matches_im0, norm=True)
-        coarse_matches_im1 = geotrf(map_to_resize_max, coarse_matches_im1, norm=True)
+            query_view, map_view, model, device, fast_nn_params)
 
         # Prepare image crops around coarse matches
         crops1, crops2 = [], []
         to_orig1, to_orig2 = [], []
         resolution = get_HW_resolution(H, W, maxdim=maxdim, patchsize=model.patch_embed.patch_size)
 
-        for crop_q, crop_b, _ in select_pairs_of_crops(map_rgb_tensor,
+        for crop_q, crop_b, _, in select_pairs_of_crops(map_rgb_tensor,
                                                        query_rgb_tensor,
                                                        coarse_matches_im1,
                                                        coarse_matches_im0,
                                                        maxdim=maxdim,
                                                        overlap=0.5,
                                                        forced_resolution=[resolution, resolution]):
-            
+                                                       
             # Crop map and query image regions, return uncropping transforms
             c1, _, _, trf1 = crop(map_rgb_tensor, None, None, crop_q, map_K)
             c2, _, _, trf2 = crop(query_rgb_tensor, None, None, crop_b, query_K)
@@ -286,7 +267,7 @@ def get_matches(query_view, map_view, coarse_to_fine, model, device, pixel_tol):
             matches_im_query, matches_im_map, matches_conf = [], [], []
         else:
             crops1, crops2 = torch.stack(crops1), torch.stack(crops2)
-            if len(crops1.shape) == 3:  # single crop fallback
+            if len(crops1.shape) == 3:  # Single crop fallback
                 crops1, crops2 = crops1[None], crops2[None]
             to_orig1, to_orig2 = torch.stack(to_orig1), torch.stack(to_orig2)
 
@@ -301,68 +282,65 @@ def get_matches(query_view, map_view, coarse_to_fine, model, device, pixel_tol):
             # Run fine matching on high-res cropped regions
             matches_im_query, matches_im_map, matches_conf = get_fine_matches(
                 query_crop_view, map_crop_view,
-                model, device,
-                pixel_tol, fast_nn_params
+                model, device, fast_nn_params
             )
     else:
         # Use only coarse matching (no fine refinement)
         matches_im_query, matches_im_map, matches_conf = get_coarse_matches(
-            query_view, map_view, model, device, pixel_tol, fast_nn_params)
+            query_view, map_view, model, device, fast_nn_params)
 
     return matches_im_query, matches_im_map, matches_conf
 
 @torch.no_grad()
 def get_pointcloud_from_images(
-    cam_dir, model, device, image_size,
+    cam_dict, model, device, image_size,
     filelist, min_conf_thr, clean_depth,
-    scene_graph, symmetrize, coarse_to_fine, pixel_tol, silent=False):
-    imgs = load_images(filelist, size=image_size, verbose=not silent)
+    coarse_to_fine, allowed_ref_ids, orig_imsize):
+    """Generate 3D point cloud from multi-view images using triangulation"""
+
+    imgs = load_images(filelist, size=image_size, verbose=True)
     if len(imgs) == 1:
         imgs = [imgs[0], copy.deepcopy(imgs[0])]
         imgs[1]['idx'] = 1
         filelist = [filelist[0], filelist[0] + '_2']
 
-    pairs = make_pairs(imgs, scene_graph=scene_graph, prefilter=None, symmetrize=symmetrize, sim_mat=None)
+    pts3d_all = []
+    confs_all = []
+    rgb_all = []
 
-    # Convert pair naming convention from dust3r to mast3r
-    pairs = convert_dust3r_pairs_naming(filelist, pairs)
-    
-    ref_to_pairs = defaultdict(list)
+    # Use pre-selected reference views
+    for ref_id in allowed_ref_ids:
+        pairs = make_pairs(imgs, scene_graph=f'oneref-{ref_id}', prefilter=None, symmetrize=False, sim_mat=None)
+        pairs = convert_dust3r_pairs_naming(filelist, pairs)
+        ref_path = pairs[0][0]['instance']
+        new_imsize = pairs[0][0]['true_shape'][0]
 
-    for pair in pairs:
-        ref_path = pair[0]['instance']
-        ref_to_pairs[ref_path].append(pair)
-    
-    matches_list = []
-    intrinsics_list = []
-    extrinsics_list = []
-
-    for ref_path, pair_list in ref_to_pairs.items():
         intrinsics = []
         extrinsics = []
 
-        # Add reference camera first
-        K_ref, ext_ref = load_gt_camera(ref_path, cam_dir)
+        K_ref, ext_ref = load_gt_camera(ref_path, cam_dict, device, orig_imsize, new_imsize)
         intrinsics.append(K_ref)
         extrinsics.append(ext_ref)
 
-        H, W = pair_list[0][0]['true_shape'][0]
-        matches = torch.zeros((len(pair_list), H, W, 5), dtype=torch.float32, device=device)
+        H, W = pairs[0][0]['true_shape'][0]
+        matches = torch.zeros((len(pairs), H, W, 5), dtype=torch.float32, device=device)
 
-        for i, (ref, other) in enumerate(pair_list):
-            K, ext = load_gt_camera(other['instance'], cam_dir)
+        for i, (ref, other) in enumerate(pairs):
+            new_imsize = other['true_shape'][0]
+            K, ext = load_gt_camera(other['instance'], cam_dict, device, orig_imsize, new_imsize)
             intrinsics.append(K)
             extrinsics.append(ext)
             other['intrinsics'] = K
             ref['intrinsics'] = K_ref
 
-            matches_im_query, matches_im_map, matches_conf = get_matches(ref, other, coarse_to_fine, model, device, pixel_tol)
+            # Get macthes for reference and map view
+            matches_im_query, matches_im_map, matches_conf = get_matches(ref, other, coarse_to_fine, model, device)
 
+            # Create dense matches tensor for triangulation
             for idx in range(len(matches_im_query)):
-                x_ref, y_ref = matches_im_query[idx]
-                x_other, y_other = matches_im_map[idx]
+                x_ref, y_ref = np.round(matches_im_query[idx]).astype(int)
+                x_other, y_other = np.round(matches_im_map[idx]).astype(int)
                 confidence = float(matches_conf[idx])
-
                 if 0 <= x_ref < W and 0 <= y_ref < H:
                     matches[i, y_ref, x_ref, 0] = x_ref
                     matches[i, y_ref, x_ref, 1] = y_ref
@@ -370,71 +348,113 @@ def get_pointcloud_from_images(
                     matches[i, y_ref, x_ref, 3] = y_other
                     matches[i, y_ref, x_ref, 4] = confidence
 
-        matches_list.append(matches.unsqueeze(0))                    # [1, Npairs, H, W, 5]
-        intrinsics_list.append(torch.stack(intrinsics).unsqueeze(0))       # [1, Ncams, 3, 3]
-        extrinsics_list.append(torch.stack(extrinsics).unsqueeze(0))       # [1, Ncams, 3, 4]
+        intrinsics_tensor = torch.stack(intrinsics).unsqueeze(0)
+        extrinsics_tensor = torch.stack(extrinsics).unsqueeze(0)
+        matches_tensor = matches.unsqueeze(0)
 
-    matches_tensor = torch.cat(matches_list, dim=0)            # [B, Npairs, H, W, 5]
-    intrinsics_tensor = torch.cat(intrinsics_list, dim=0)  # [B, Ncams, 3, 3]
-    extrinsics_tensor = torch.cat(extrinsics_list, dim=0)  # [B, Ncams, 3, 4]
+        # Triangulate macthes in 3D using ground truth camera information
+        pts3d, depthmaps, confs = matches_to_depths(
+            intrinsics=intrinsics_tensor,
+            extrinsics=extrinsics_tensor,
+            matches=matches_tensor
+        )
 
-    pts3d, depthmaps, confs = matches_to_depths(
-        intrinsics=intrinsics_tensor,
-        extrinsics=extrinsics_tensor,
-        matches=matches_tensor,
-        min_num_valids_ratio=0.3,
-    )
+        # Remove spurious 3D points via geometric consistency post-processing
+        if clean_depth:
+            confs = clean_pointcloud(confs, intrinsics_tensor[:, 0], extrinsics_tensor[:, 0], depthmaps, pts3d)
 
-    if clean_depth:
-        confs = clean_pointcloud(confs, intrinsics_tensor[:, 0], extrinsics_tensor[:, 0], depthmaps, pts3d)
+        pts3d_all.append(pts3d.cpu())
+        confs_all.append(torch.stack(confs).cpu())
+        rgb_all.append(torgb(pairs[0][0]['img']))
 
-    mask = (torch.stack(confs) > min_conf_thr)
-    rgbimg = [torgb(pair_list[0][0]['img']) for pair_list in ref_to_pairs.values()]
+    # Gather 3D-points from all reference views and compute mask based on min confidence threshold
+    pts3d_all = torch.cat(pts3d_all, dim=0)
+    confs_all = torch.cat(confs_all, dim=0)
+    mask = (confs_all > min_conf_thr)
 
-    return extract_pointcloud(rgbimg, pts3d, mask)
+    return extract_pointcloud(rgb_all, pts3d_all, mask)
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Generate 3D point clouds from multi-view images using MASt3R')
+    
+    parser.add_argument('--scene_root', type=str, required=True, default='data/dtu/Scenes',
+                        help='Root directory containing scene folders')
+    parser.add_argument('--output_dir', type=str, default='predictions',
+                        help='Directory to save generated point clouds')
+    parser.add_argument('--device', type=str, default='auto',
+                        help='Device to use (cuda/cpu/auto)')
+    parser.add_argument('--scan_ids', nargs='+', type=int, default=[],
+                        help='List of scan IDs to process (if not specified, processes all available scenes)')
+    parser.add_argument('--image_size', type=int, default=1600,
+                        help='Maximum image dimension for processing')
+    parser.add_argument('--min_conf_thr', type=float, default=2.0,
+                        help='Minimum confidence threshold for 3D points')
+    parser.add_argument('--clean_depth', action='store_true', default=True,
+                        help='Apply depth cleaning to remove outliers')
+    parser.add_argument('--coarse_to_fine', action='store_true', default=True,
+                        help='Use coarse-to-fine matching strategy')
+    parser.add_argument('--ref_ids', nargs='+', type=int, default=[0, 10, 20, 30, 40, 48],
+                        help='Reference image IDs for reconstruction')
+    parser.add_argument('--orig_height', type=int, default=1200,
+                        help='Original image height')
+    parser.add_argument('--orig_width', type=int, default=1600,
+                        help='Original image width')
+    
+    return parser.parse_args()
 
 def main():
-    # dtu_test_scan_ids = [24, 37, 40, 55, 63, 65, 69, 83, 97, 105, 106, 110, 114, 118, 122]
-    dtu_test_scan_ids = [24]
-    image_dir = '../data/dtu/Cleaned'
-    cam_dir = '../data/dtu/Cameras'
-    output_dir = '../predictions'
+    args = parse_args()
+    
+    if args.device == 'auto':
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    else:
+        device = args.device
 
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # Load pre-trained model
     model = AsymmetricMASt3R.from_pretrained('naver/MASt3R_ViTLarge_BaseDecoder_512_catmlpdpt_metric')
     model = model.to(device).eval()
 
-    for scan_id in dtu_test_scan_ids:
-        print(f"\nProcessing scan {scan_id}")
-        img_paths = glob(os.path.join(image_dir, f'scan{scan_id}', '*_3_r5000.png'))
-        img_paths = sorted(
-            img_paths,
-            key=lambda p: int(re.search(r'(\d+)_3_r5000', os.path.basename(p)).group(1))
-        )
+    # Get scene directories to process
+    all_scan_dirs = sorted(glob(os.path.join(args.scene_root, "scan*")))
+
+    if args.scan_ids:
+        selected_scan_dirs = [f"scan{sid}" for sid in args.scan_ids]
+        all_scan_dirs = [d for d in all_scan_dirs if os.path.basename(d) in selected_scan_dirs]
+
+    for scan_path in all_scan_dirs:
+        scan_name = os.path.basename(scan_path)
+        print(f"\nProcessing {scan_name}")
+
+        image_dir = os.path.join(scan_path, "images")
+        cam_dir = os.path.join(scan_path, "cams")
+
+        img_paths = sorted(glob(os.path.join(image_dir, "*.jpg")))
+        cam_paths = sorted(glob(os.path.join(cam_dir, "*_cam.txt")))
 
         if not img_paths:
-            print(f"No valid images found for scan {scan_id}. Skipping.")
+            print(f"No images found in {image_dir}, skipping.")
             continue
 
-        if len(img_paths) != 49:
-            print(f"Different amount of images for this scan: {len(img_paths)} in stead of 49.")
+        cam_dict = {int(re.search(r"(\d+)_cam\.txt", os.path.basename(p)).group(1)): p for p in cam_paths}
 
-        pointcloud = get_pointcloud_from_images(
-            cam_dir=cam_dir,
+        # Generate point cloud for current scan
+        pc = get_pointcloud_from_images(
+            cam_dict=cam_dict,
             model=model,
             device=device,
-            image_size=1600,
+            image_size=args.image_size,
             filelist=img_paths,
-            min_conf_thr=1.5,
-            clean_depth=True,
-            scene_graph="oneref-0",
-            symmetrize=False,
-            coarse_to_fine=True,
-            pixel_tol=5
+            min_conf_thr=args.min_conf_thr,
+            clean_depth=args.clean_depth,
+            coarse_to_fine=args.coarse_to_fine,
+            allowed_ref_ids=args.ref_ids,
+            orig_imsize=(args.orig_height, args.orig_width)
         )
 
-        out_path = os.path.join(output_dir, f'scan{scan_id}_fine.ply')
-        pointcloud.export(out_path)
+        # Save point cloud
+        os.makedirs(args.output_dir, exist_ok=True)
+        out_path = os.path.join(args.output_dir, f'{scan_name}.ply')
+        pc.export(out_path)
         print(f"Point cloud saved to {out_path}")
 
 if __name__ == "__main__":

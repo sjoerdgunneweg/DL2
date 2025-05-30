@@ -2,7 +2,7 @@
 
 #SBATCH --partition=gpu_a100
 #SBATCH --gpus=1
-#SBATCH --job-name=mast3r_eval
+#SBATCH --job-name=mast3r_predict
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=9
 #SBATCH --time=00:59:00
@@ -13,4 +13,4 @@ module load 2024
 module load Anaconda3/2024.06-1
 
 source activate mast3r
-srun python DTUeval-python/eval.py --data "predictions/scan{}_fine_complete_sym_50.ply" --scan_list 24  --mode pcd --dataset_dir data/dtu --vis_out_dir DTUeval-python/vis
+srun python mast3r/mast3r_predict_dtu.py --scene_root 'data/dtu/Scenes'

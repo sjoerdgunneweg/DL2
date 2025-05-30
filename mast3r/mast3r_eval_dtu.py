@@ -1,4 +1,7 @@
-# Modified script to evaluate a list of scans instead of a single scan
+# -----------------------------------------------------------------------------
+# Adapted from: https://github.com/jzhangbs/DTUeval-python/blob/master/eval.py
+# Description: Modified to evaluate a list of DTU scans instead of a single scan
+# -----------------------------------------------------------------------------
 
 import numpy as np
 import open3d as o3d
@@ -94,7 +97,7 @@ def evaluate_single_scan(scan_id, args):
 
     over_all = (mean_d2s + mean_s2d) / 2
 
-    print(f"Scan {scan_id:03}: D2S = {mean_d2s:.3f}, S2D = {mean_s2d:.3f}, Avg = {over_all:.3f}")
+    print(f"Scan {scan_id:03}: Accuracy = {mean_d2s:.3f}, Completeness = {mean_s2d:.3f}, Chamfer distance = {over_all:.3f}")
     return mean_d2s, mean_s2d, over_all
 
 if __name__ == '__main__':
@@ -120,8 +123,11 @@ if __name__ == '__main__':
             print(f"Error in scan {scan_id:03}: {e}")
 
     print("\n=== Summary ===")
-    for scan_id, d2s, s2d, avg in all_results:
-        print(f"Scan {scan_id:03}: D2S = {d2s:.3f}, S2D = {s2d:.3f}, Avg = {avg:.3f}")
     if all_results:
+        all_d2s = np.mean([r[1] for r in all_results])
+        all_s2d = np.mean([r[2] for r in all_results])
         all_avg = np.mean([r[3] for r in all_results])
-        print(f"Overall average: {all_avg:.3f}")
+        
+        print(f"\nAverage accuracy: {all_d2s:.3f}")
+        print(f"Average completeness: {all_s2d:.3f}")
+        print(f"Average chamfer distance: {all_avg:.3f}")

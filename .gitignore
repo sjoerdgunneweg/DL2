@@ -182,6 +182,7 @@ out_files/
 mast3r/asmk/*
 mast3r/data/
 data/
+data_old/
 
 mast3r/cache/
 mast3r/out/
