@@ -226,4 +226,9 @@ You can create a job script like the one below (example for Snellius using Appta
 
 ## Conclusion
 
+# TODO erin verwerken!
+- **Reproducibility Challenges:** Limited documentation and missing evaluation scripts in the original implementation
+- **Domain Gap:** Unclear how well laboratory benchmark performance translates to real robotic scenarios
+- **Integration Complexity:** No existing framework for incorporating MASt3R outputs into manipulation pipelines
+
 ## Description of each students contribution
