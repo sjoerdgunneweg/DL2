@@ -160,7 +160,7 @@ Use the `rvt2build.def` file with Apptainer (formerly Singularity). For more inf
 This should work automatically, make sure the following environment variables are set before running the container.
 
 ```bash
-export COPPELIASIM_ROOT=<EDIT ME>/PATH/TO/COPPELIASIM/INSTALL/DIR
+export COPPELIASIM_ROOT=<PATH TO COPPELIASIM INSTALL DIR>
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$COPPELIASIM_ROOT
 export QT_QPA_PLATFORM_PLUGIN_PATH=$COPPELIASIM_ROOT
 export DISPLAY=:1.0
@@ -181,8 +181,8 @@ Replace the paths with the location of your `data/` and `runs/` directories:
 
 ```bash
 docker run --gpus all -it \
-  -v /path/to/data:/root/install/RVT/rvt/data \
-  -v /path/to/runs:/root/install/RVT/rvt/runs \
+  -v <DATA_FOLDER_LOCATION>:/root/install/RVT/rvt/data \
+  -v <RUNS_FOLDER_LOCATION>:/root/install/RVT/rvt/runs \
   -w /root/install/RVT/rvt \
   rvt2:latest
 ```
@@ -192,8 +192,8 @@ Make sure to bind your local data and run directories, and use `--nv` for GPU su
 
 ```bash
 apptainer shell --nv \
-  --bind /path/to/project:/rvt \
-  --bind /path/to/data:/data \
+  --bind <PROJECT_FOLDER_LOCATION>:/rvt \
+  --bind <DATA_FOLDER_LOCATION>:/data \
   rvt2build.sif
 ```
 
