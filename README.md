@@ -5,7 +5,9 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 Recovering 3D structure from uncalibrated images is fundamental to computer vision and robotics, with traditional multi-view stereo (MVS) methods like SIFT suffering from limitations under wide viewpoint changes and textureless surfaces. Recent learning-based approaches such as DUSt3R address these issues by treating image correspondence as a 3D prediction task through transformer-based pipelines. MASt3R builds upon this foundation with dense local features and modified ViT backbones, achieving state-of-the-art performance on benchmarks like [DTU](https://roboimagedata.compute.dtu.dk/?page_id=36) with particular robustness under challenging conditions. Meanwhile, vision-based robotic manipulation typically relies on expensive calibrated RGB-D sensors for 3D spatial perception. While systems like RVT-2 have reduced supervision requirements through transformer architectures that fuse multi-view features for manipulation tasks, they still depend on high-quality depth information.  While prior work has explored depth fusion or SLAM-based integration for perception, few systems have attempted to replace depth sensors entirely using learned geometry from raw RGB. This is particularly relevant in settings where depth sensors are impractical due to lighting, range, or surface properties.
 
 **Authors:** Ruben Figge, Sjoerd Gunneweg, Jurgen de Heus, Mees Lindeman  
-**University of Amsterdam**
+<a href="https://www.uva.nl"> <img src="https://www.uva.nl/favicon.ico" width="16" style="vertical-align: text-bottom;"/></a>**University of Amsterdam** 
+
+
 
 ## Table of Contents
 
@@ -16,6 +18,7 @@ Recovering 3D structure from uncalibrated images is fundamental to computer visi
 - [Results](#results)
   - [MASt3R Reproducibility (DTU Dataset)](#mast3r-reproducibility-dtu-dataset)
   - [Depth Map Quality Assessment (RLBench)](#depth-map-quality-assessment-rlbench)
+  - [RVT-2 Reprocability Results](#rvt-2-reprocability-results)
   - [RVT-2 Integration Results](#rvt-2-integration-results)
 - [Reproducing Results](#reproducing-results)
   - [Getting started:](#getting-started)
@@ -24,11 +27,6 @@ Recovering 3D structure from uncalibrated images is fundamental to computer visi
   - [RVT-2](#rvt-2)
 - [Conclusion](#conclusion)
 - [Description of each students contribution](#description-of-each-students-contribution)
-  - [All](#all)
-  - [Ruben](#ruben)
-  - [Sjoerd](#sjoerd)
-  - [Jurgen](#jurgen)
-  - [Mees](#mees)
 - [Acknowledgement](#acknowledgement)
 
 
@@ -59,6 +57,23 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 ## Results
 
 ### MASt3R Reproducibility (DTU Dataset)
+<div align="center">
+
+| Methods                              | Acc. ↓ | Comp. ↓ | Overall ↓ |
+|--------------------------------------|--------|----------|------------|
+| DUSt3R (Original Results)            | 2.677  | 0.805    | 1.741      |
+| MASt3R (Original Results)            | 0.403  | 0.344    | 0.374      |
+| MASt3R (Our Reproduction)            | 0.551  | 0.385    | 0.468      |
+
+**Table:** Accuracy (Acc.), Completeness (Comp.), and Overall (Chamfer distance) scores for MASt3R evaluated on the DTU dataset. Lower is better for all metrics. Original results compared with our reproduced results.
+
+</div>
+
+Our MVS Results             |  Original MVS Results
+:-------------------------:|:-------------------------:
+![Our MVS Results](figures/pointcloud.png) |  ![Original MVS Results](figures/pointcloud_og.png)
+
+**Figure:** Qualitative MVS results comparison between results obtained by us (left) and the original results from MASt3R (right)
 
 As shown in the table below, our reproduction yielded
 worse results compared to those originally reported by MASt3R. Although we carefully followed the
@@ -78,7 +93,38 @@ setting remains valid.
 
 ### Depth Map Quality Assessment (RLBench)
 
+| Average ScaleInvRMSE per view           | Average SSIM per view             |
+|:------------------------:|:-------------------------:|
+| ![Average Loss](figures/AbsRel_per_view.png) | ![Relative Loss](figures/RMSE_per_view.png) |
+| Average AbsRel per view             | Average AbsRel per view             |
+| ![RGB-D Input](figures/ScaleInvRMSE_per_view.png) | ![MASt3R Input](figures/SSIM_per_view.png) |
+
+**Figure:** Depth Evaluation by Camera View
+
+
+![MASt3R depthmaps vs orignal on close\_jar](figures/rlbench.png)
+**Figure:** Qualitative results of depth estimation with the use of MASt3R. The scene depicted is timestep 42, episode 42 of the close\_jar training observation.
+
+### RVT-2 Reprocability Results
+
+<div align="center">
+
+| **Task**       | **Paper**        | **Model** | **Trained** |
+|----------------|------------------|-----------|-------------|
+| open_drawer    | 74.0 ± 11.8%     | 88.0%     | 72.0%       |
+| close_jar      | 100.0 ± 0.0%     | 100.0%    | 100.0%      |
+
+**Table:** Evaluation accuracy (%).
+
+</div>
+
 ### RVT-2 Integration Results
+
+Average Loss             |  Relative Loss
+:-------------------------:|:-------------------------:
+![Average Loss](figures/avg_loss.png) |  ![Relative Loss](figures/rel_loss.png)
+
+**Figure:** Average and Relative Loss for RVT-2 with MASt3R vs. Original RGB-D Input.
 
 ## Reproducing Results
 
@@ -306,7 +352,7 @@ export DATA_FOLDER=<DATA_FOLDER_LOCATION>
 
 # Enter the Apptainer container and run the training
 apptainer exec --nv \
---bind ~/DL2/rvt-build/peract_colab:/root/install/RVT/rvt/libs/peract_colab \
+--bind ~/mast3r-rvt2-integration/rvt-build/peract_colab:/root/install/RVT/rvt/libs/peract_colab \
 --bind $DATA_FOLDER \
 rvt2build.sif \
 bash -c "
@@ -322,27 +368,24 @@ xvfb-run python train.py \
 
 ## Conclusion
 
-### TODO erin verwerken!
-- **Reproducibility Challenges:** Limited documentation and missing evaluation scripts in the original implementation
-- **Domain Gap:** Unclear how well laboratory benchmark performance translates to real robotic scenarios
-- **Integration Complexity:** No existing framework for incorporating MASt3R outputs into manipulation pipelines
+This project explored the integration of MASt3R-generated 3D pointmaps into RVT-2 to replace conventional RGB-D inputs for high-precision robotic manipulation. Our results show that RVT-2 trained on MASt3R input achieves comparable average total loss to the original setup, indicating that the overall pipeline is viable. Task-specific analysis revealed notable degradation in grip-related performance. A possible explanation is that MASt3R's depth predictions were especially poor for the wrist camera view, highly linked to grasp evaluation, leading to increased grip loss. While the approach shows promise, future work should aim to improve reconstruction quality at critical viewpoints where depth errors significantly impact gripper performance. Additionally, future extensions could explore feeding MASt3R's dense feature maps directly into RVT-2's transformer backbone as an alternative to pointmaps.
 
 ## Description of each students contribution
 
-### All
-Contributed to writing of the report
+**All**
+- Contributed to writing of the report
 
-### Ruben
+**Ruben**
 - MASt3R depthmap creation
 
-### Sjoerd
+**Sjoerd**
 - Realizing RVT-2 in Snellius
 - MASt3R integration with RVT-2
 
-### Jurgen
+**Jurgen**
 - Reproduction MASt3R's MVS results on DTU
 
-### Mees
+**Mees**
 - Realizing RVT-2 in Snellius
 - MASt3R integration with RVT-2
 
