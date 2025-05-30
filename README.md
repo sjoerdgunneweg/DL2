@@ -5,7 +5,9 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 Recovering 3D structure from uncalibrated images is fundamental to computer vision and robotics, with traditional multi-view stereo (MVS) methods like SIFT suffering from limitations under wide viewpoint changes and textureless surfaces. Recent learning-based approaches such as DUSt3R address these issues by treating image correspondence as a 3D prediction task through transformer-based pipelines. MASt3R builds upon this foundation with dense local features and modified ViT backbones, achieving state-of-the-art performance on benchmarks like [DTU](https://roboimagedata.compute.dtu.dk/?page_id=36) with particular robustness under challenging conditions. Meanwhile, vision-based robotic manipulation typically relies on expensive calibrated RGB-D sensors for 3D spatial perception. While systems like RVT-2 have reduced supervision requirements through transformer architectures that fuse multi-view features for manipulation tasks, they still depend on high-quality depth information.  While prior work has explored depth fusion or SLAM-based integration for perception, few systems have attempted to replace depth sensors entirely using learned geometry from raw RGB. This is particularly relevant in settings where depth sensors are impractical due to lighting, range, or surface properties.
 
 **Authors:** Ruben Figge, Sjoerd Gunneweg, Jurgen de Heus, Mees Lindeman  
-**University of Amsterdam**
+<a href="https://www.uva.nl"> <img src="https://www.uva.nl/favicon.ico" width="16" style="vertical-align: text-bottom;"/></a>**University of Amsterdam** 
+
+
 
 ## Table of Contents
 
