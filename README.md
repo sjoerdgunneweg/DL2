@@ -39,6 +39,10 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 - **Domain Gap:** Unclear how well laboratory benchmark performance translates to real robotic scenarios
 - **Integration Complexity:** No existing framework for incorporating MASt3R outputs into manipulation pipelines
 
+- **Untested in Robotic Contexts:** MASt3R had only been evaluated on traditional computer vision benchmarks (DTU, Map-Free Localization), with no validation in real robotic manipulation scenarios
+- **RVT-2's RGB-D Dependency:** Despite RVT-2's manipulation performance, it remains constrained by the requirement for expensive, calibrated RGB-D sensors
+- **Cost and Accessibility Barriers:** Current state-of-the-art manipulation systems require hardware setups that are expensive for many applications
+
 ## Novel contributions
 
 This project introduces two primary novel contributions to the field of vision-based robotic manipulation:
