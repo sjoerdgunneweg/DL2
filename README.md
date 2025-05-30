@@ -59,11 +59,14 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 ### MASt3R Reproducibility (DTU Dataset)
 <div align="center">
 
-| Methods                              | Acc. ↓ | Comp. ↓ | Overall ↓ |
-|--------------------------------------|--------|----------|------------|
-| DUSt3R (Original Results)            | 2.677  | 0.805    | 1.741      |
-| MASt3R (Original Results)            | 0.403  | 0.344    | 0.374      |
-| MASt3R (Our Reproduction)            | 0.551  | 0.385    | 0.468      |
+| Methods                    | Acc. ↓ | Comp. ↓ | Overall ↓ |
+|---------------------------|--------|---------|-----------|
+| DUS3R (Original Results) [Wang et al., 2024][1]  | 2.677  | 0.805   | 1.741     |
+| MASt3R (Original Results) [Leroy et al., 2023][2] | 0.403  | 0.344   | 0.374     |
+| MASt3R (Our Reproduction) | 0.551  | 0.385   | 0.468     |
+
+[1]: https://arxiv.org/abs/2312.14132
+[2]: https://arxiv.org/abs/2406.09756
 
 **Table:** Accuracy (Acc.), Completeness (Comp.), and Overall (Chamfer distance) scores for MASt3R evaluated on the DTU dataset. Lower is better for all metrics. Original results compared with our reproduced results.
 
@@ -74,22 +77,6 @@ Our MVS Results             |  Original MVS Results
 ![Our MVS Results](figures/pointcloud.png) |  ![Original MVS Results](figures/pointcloud_og.png)
 
 **Figure:** Qualitative MVS results comparison between results obtained by us (left) and the original results from MASt3R (right)
-
-As shown in the table below, our reproduction yielded
-worse results compared to those originally reported by MASt3R. Although we carefully followed the
-available instructions, this discrepancy could be due to undisclosed differences in procedure. Given
-the absence of detailed information, we conclude that MASt3R’s reported results for MVS are not
-entirely reproducible. However, the authors’ claim of achieving reasonable results in a zero-shot
-setting remains valid.
-
-| Methods                    | Acc. ↓ | Comp. ↓ | Overall ↓ |
-|---------------------------|--------|---------|-----------|
-| DUS3R (Original Results) [Wang et al., 2024][1]  | 2.677  | 0.805   | 1.741     |
-| MASt3R (Original Results) [Leroy et al., 2023][2] | 0.403  | 0.344   | 0.374     |
-| MASt3R (Our Reproduction) | 0.551  | 0.385   | 0.468     |
-
-[1]: https://arxiv.org/abs/2312.14132
-[2]: https://arxiv.org/abs/2406.09756
 
 ### Depth Map Quality Assessment (RLBench)
 
