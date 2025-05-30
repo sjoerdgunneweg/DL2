@@ -5,28 +5,30 @@
 
 ## Table of Contents
 
-1. [Enhancing Few-Shot Robotic Manipulation by Replacing Depth Sensors with Learned 3D Geometry from MASt3R](#enhancing-few-shot-robotic-manipulation-by-replacing-depth-sensors-with-learned-3d-geometry-from-mast3r)  
-2. [Introduction](#introduction)  
-3. [Strengths, Weaknesses, and Motivation](#strengths-weaknesses-and-motivation)  
-4. [Novel Contributions](#novel-contributionas)  
-5. [Results](#results)  
-   - [MASt3R Reproducibility (DTU Dataset)](#mast3r-reproducibility-dtu-dataset)  
-   - [Depth Map Quality Assessment (RLBench)](#depth-map-quality-assessment-rlbench)  
-   - [RVT-2 Integration Results](#rvt-2-integration-results)  
-6. [Conclusion](#conclusion)  
-7. [Description of Each Student's Contribution](#description-of-each-students-contribution)  
-8. [Technical Setup](#technical-setup)  
-   - [MASt3R](#mast3r)  
-   - [Benchmarking MASt3R on RLBench Depth Estimation](#benchmarking-mast3r-on-rlbench-depth-estimation)  
-   - [MASt3R Checkpoints](#mast3r-checkpoints)  
-   - [RVT-2](#rvt-2)  
-   - [Setup Options](#setup-options)  
-   - [Environment Setup](#environment-setup)  
-   - [Data & Model Setup](#data--model-setup)  
-   - [Running the Container](#running-the-container)  
-   - [Evaluation](#evaluation)  
-   - [Training or Evaluating Custom Models](#training-or-evaluating-custom-models)  
-   - [Training from Scratch on MASt3R-Generated Data](#training-from-scratch-on-mast3r-generated-data)  
+## Table of Contents
+
+- [Introduction](#introduction)  
+- [Strengths, Weaknesses, and Motivation](#strengths-weaknesses-and-motivation)  
+- [Novel Contributions](#novel-contributionas)  
+- [Results](#results)  
+  * [MASt3R Reproducibility (DTU Dataset)](#mast3r-reproducibility-dtu-dataset)  
+  * [Depth Map Quality Assessment (RLBench)](#depth-map-quality-assessment-rlbench)  
+  * [RVT-2 Integration Results](#rvt-2-integration-results)  
+- [Conclusion](#conclusion)  
+- [Description of Each Student's Contribution](#description-of-each-students-contribution)  
+- [Technical Setup](#technical-setup)  
+  * [MASt3R](#mast3r)  
+  * [Benchmarking MASt3R on RLBench Depth Estimation](#benchmarking-mast3r-on-rlbench-depth-estimation)  
+  * [MASt3R Checkpoints](#mast3r-checkpoints)  
+  * [RVT-2](#rvt-2)  
+  * [Setup Options](#setup-options)  
+  * [Environment Setup](#environment-setup)  
+  * [Data & Model Setup](#data--model-setup)  
+  * [Running the Container](#running-the-container)  
+  * [Evaluation](#evaluation)  
+  * [Training or Evaluating Custom Models](#training-or-evaluating-custom-models)  
+  * [Training from Scratch on MASt3R-Generated Data](#training-from-scratch-on-mast3r-generated-data)  
+
 
 ## Introduction
 
