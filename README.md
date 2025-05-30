@@ -70,6 +70,11 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 ### Depth Map Quality Assessment (RLBench)
 
+![Our MVS Results](figures/pointcloud.png)
+![Original MVS Results](figures/pointcloud_og.png)
+
+**Figure:** Qualitative MVS results comparison between results obtained by us and the original results from MASt3R
+
 ### RVT-2 Integration Results
 
 ![Average Loss](figures/avg_loss.png)
@@ -78,6 +83,13 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 **Figure:** Average and Relative Loss for RVT-2 with MASt3R vs. Original RGB-D Input.
 
 ## Reproducing Results
+
+| **Task**       | **Paper**        | **Model** | **Trained** |
+|----------------|------------------|-----------|-------------|
+| open_drawer    | 74.0 ± 11.8%     | 88.0%     | 72.0%       |
+| close_jar      | 100.0 ± 0.0%     | 100.0%    | 100.0%      |
+
+**Table:** Evaluation accuracy (%).
 
 ### Getting started:
 - **Step 1:** Create the environment. We recommend following the installation steps 2 and 3 specified in the README of the [MASt3R](https://europe.naverlabs.com/blog/mast3r-matching-and-stereo-3d-reconstruction/) repository for creating a conda environment.
