@@ -68,10 +68,8 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 **Table:** Accuracy (Acc.), Completeness (Comp.), and Overall (Chamfer distance) scores for MASt3R evaluated on the DTU dataset. Lower is better for all metrics. Original results compared with our reproduced results.
 
-![Our MVS Results](figures/pointcloud.png)
-![Original MVS Results](figures/pointcloud_og.png)
 
-Solarized dark             |  Solarized Ocean
+Our MVS Results             |  Original MVS Results
 :-------------------------:|:-------------------------:
 ![Our MVS Results](figures/pointcloud.png) |  ![Original MVS Results](figures/pointcloud_og.png)
 
@@ -83,8 +81,9 @@ Solarized dark             |  Solarized Ocean
 
 ### RVT-2 Integration Results
 
-![Average Loss](figures/avg_loss.png)
-![Relative Loss](figures/rel_loss.png)
+Average Loss             |  Relative Loss
+:-------------------------:|:-------------------------:
+![Average Loss](figures/avg_loss.png) |  ![Relative Loss](figures/rel_loss.png)
 
 **Figure:** Average and Relative Loss for RVT-2 with MASt3R vs. Original RGB-D Input.
 
