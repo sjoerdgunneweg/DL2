@@ -90,6 +90,7 @@ Average Loss             |  Relative Loss
 **Figure:** Average and Relative Loss for RVT-2 with MASt3R vs. Original RGB-D Input.
 
 ## Reproducing Results
+<div align="center">
 
 | **Task**       | **Paper**        | **Model** | **Trained** |
 |----------------|------------------|-----------|-------------|
@@ -97,6 +98,8 @@ Average Loss             |  Relative Loss
 | close_jar      | 100.0 ± 0.0%     | 100.0%    | 100.0%      |
 
 **Table:** Evaluation accuracy (%).
+
+</div>
 
 ### Getting started:
 - **Step 1:** Create the environment. We recommend following the installation steps 2 and 3 specified in the README of the [MASt3R](https://europe.naverlabs.com/blog/mast3r-matching-and-stereo-3d-reconstruction/) repository for creating a conda environment.
