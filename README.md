@@ -41,6 +41,16 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 
 ## Novel contributions
 
+This project introduces two primary novel contributions to the field of vision-based robotic manipulation:
+
+1. Benchmarking MASt3R on Synthetic Robotic Data
+We provide an evaluation of depth maps generated using the MASt3R model on the RLBench dataset. This dataset consists of synthetic, low-resolution, multi-view robotic scenes. While MASt3R has been trained on synthetic data, it has only been benchmarked on real-world datasets such as DTU; its performance on synthetic scenes remained unexplored. Our benchmarking against ground-truth RLBench depth maps extends the evaluation of MASt3R from real-world to simulated domains, revealing insights into its generalizability under reduced visual complexity, such as limited shadows, reflections, and texture variance.
+
+2. Generalizing the RVT-2 Pipeline by Using Estimated Depth Maps
+The core contribution of this work lies in modifying the RVT-2 pipeline to eliminate the need for RGB-D input. We achieve this by integrating MAST3R into the pipeline as a plug-and-play depth estimation backbone, enabling RVT-2 to become a purely RGB-based system. To the best of our knowledge, this is the first demonstration of RVT-2 functioning without ground-truth depth information, relying instead on learned 3D geometry from uncalibrated RGB inputs. This significantly reduces hardware requirements, offering a viable path towards scalable and sensor-light robotic training systems.
+
+In combination, these contributions bridge the gap between state-of-the-art 3D reconstruction methods and practical robotic control pipelines, paving the way for future systems that learn manipulation skills in sensor-limited environments.
+
 ## Results
 
 ### MASt3R Reproducibility (DTU Dataset)
