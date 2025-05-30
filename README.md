@@ -28,7 +28,7 @@ This project investigates a fundamental challenge in robotic manipulation: the d
   * [Training or Evaluating Custom Models](#training-or-evaluating-custom-models)  
   * [Training from Scratch on MASt3R-Generated Data](#training-from-scratch-on-mast3r-generated-data)  
 
-## Strengths, Weaknesses, and Motivation
+## Strengths and Weaknesses
 
 ### Strengths of MASt3R
 - **Hardware Independence:** Eliminates the need for expensive RGB-D sensors and complex calibration procedures
