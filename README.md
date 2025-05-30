@@ -79,7 +79,21 @@ Our MVS Results             |  Original MVS Results
 
 ### Depth Map Quality Assessment (RLBench)
 
-# TODO 
+|:------------------------:|:-------------------------:|
+| ![Average Loss](figures/AbsRel_per_view.png) | ![Relative Loss](figures/RMSE_per_view.png) |
+| ![RGB-D Input](figures/ScaleInvRMSE_per_view.png) | ![MASt3R Input](figures/SSIM_per_view.png) |
+
+**Figure:** Depth Evaluation by Camera View
+
+\begin{figure}[h]
+    \centering
+    \subfigure{\includegraphics[width=0.48\textwidth]{figures/AbsRel_per_view.pdf}} 
+    \subfigure{\includegraphics[width=0.48\textwidth]{figures/RMSE_per_view.pdf}} 
+    \subfigure{\includegraphics[width=0.48\textwidth]{figures/ScaleInvRMSE_per_view.pdf}}
+    \subfigure{\includegraphics[width=0.48\textwidth]{figures/SSIM_per_view.pdf}}
+    \caption{Depth Evaluation by Camera View}
+    \label{fig:deptheval}
+\end{figure}
 
 ### RVT-2 Integration Results
 
