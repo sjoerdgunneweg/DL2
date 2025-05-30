@@ -59,6 +59,7 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 ## Results
 
 ### MASt3R Reproducibility (DTU Dataset)
+<div align="center">
 
 | Methods                              | Acc. ↓ | Comp. ↓ | Overall ↓ |
 |--------------------------------------|--------|----------|------------|
@@ -68,6 +69,7 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 **Table:** Accuracy (Acc.), Completeness (Comp.), and Overall (Chamfer distance) scores for MASt3R evaluated on the DTU dataset. Lower is better for all metrics. Original results compared with our reproduced results.
 
+</div>
 
 Our MVS Results             |  Original MVS Results
 :-------------------------:|:-------------------------:
