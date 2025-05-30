@@ -59,7 +59,7 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 ### RVT-2 Integration Results
 
-## Technical Setup
+## Reproducing Results
 
 ### MASt3R
 
