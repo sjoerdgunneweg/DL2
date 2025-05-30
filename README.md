@@ -34,7 +34,7 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 
 ## Strengths, Weaknesses, and Motivation
 
-## Novel contributionas
+## Novel contributions
 
 ## Results
 
@@ -43,10 +43,6 @@ This project investigates a fundamental challenge in robotic manipulation: the d
 ### Depth Map Quality Assessment (RLBench)
 
 ### RVT-2 Integration Results
-
-## Conclusion
-
-## Description of each students contribution
 
 ## Technical Setup
 
@@ -212,3 +208,7 @@ You can create a job script like the one below (example for Snellius using Appta
 ```bash
 
 ```
+
+## Conclusion
+
+## Description of each students contribution
