@@ -89,7 +89,7 @@ Our MVS Results             |  Original MVS Results
 
 
 ![MASt3R depthmaps vs orignal on close\_jar](figures/rlbench.png)
-**Figure:** Qualitative results of depth estimation with the use of MASt3R. The scene depicted is timestep 42, episode 42 of the \texttt{close\_jar} training observation.
+**Figure:** Qualitative results of depth estimation with the use of MASt3R. The scene depicted is timestep 42, episode 42 of the close\_jar training observation.
 
 ### RVT-2 Integration Results
 
