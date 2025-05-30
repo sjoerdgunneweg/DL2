@@ -221,7 +221,29 @@ To train RVT-2 using MASt3R-generated pointmaps, follow these steps:
 You can create a job script like the one below (example for Snellius using Apptainer):
 
 ```bash
+# Load required modules
+module purge
+module load 2022
+module load CUDA/11.7.0
+module load Xvfb/21.1.3-GCCcore-11.3.0
 
+# Set environment variables
+export DATA_FOLDER=<DATA_FOLDER_LOCATIOM>
+
+# Enter the Apptainer container and run the training
+apptainer exec --nv \
+--bind ~/DL2/rvt-build/peract_colab:/root/install/RVT/rvt/libs/peract_colab \
+--bind $DATA_FOLDER \
+rvt2build.sif \
+bash -c "
+cd RVT/rvt && \
+xvfb-run python train.py \
+    --exp_cfg_path configs/rvt2.yaml \
+    --mvt_cfg_path mvt/configs/rvt2.yaml \
+    --exp_cfg_opts 'tasks <TASK_NAME>' \
+    --device 0,1,2,3 \
+    --refresh_replay
+"
 ```
 
 ## Conclusion
