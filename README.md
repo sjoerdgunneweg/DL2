@@ -72,11 +72,12 @@ In combination, these contributions bridge the gap between state-of-the-art 3D r
 
 </div>
 
-Our MVS Results             |  Original MVS Results
-:-------------------------:|:-------------------------:
-![Our MVS Results](figures/pointcloud.png) |  ![Original MVS Results](figures/pointcloud_og.png)
+|                         |                         |                         |                         |
+|:-----------------------:|:-----------------------:|:-----------------------:|:-----------------------:|
+| ![](figures/pc1.png)    | ![](figures/pc2.png)    | ![](figures/pc3.png)    | ![](figures/pc4.png)    |
 
-**Figure:** Qualitative MVS results comparison between results obtained by us (left) and the original results from MASt3R (right)
+
+**Figure:** Qualitative reproduction MVS results on DTU.
 
 ### Depth Map Quality Assessment (RLBench)
 
